@@ -1,0 +1,19 @@
+@charset "UTF-8";
+.text-right{
+	text-align : right;
+	magin-top : -200px;
+}
+.btn-right{
+	align : right;
+}
+.sort{
+   display: flex;
+}
+
+.move-left{
+   margin-left: auto;
+}
+
+.inline{
+   display: inline;
+}
