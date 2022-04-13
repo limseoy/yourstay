@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.MyRoomMapper">
+
+	<select id="getMyRoomList" resultType="yourstay.md.domain.Reservation">
+       select * from accommodation natural join accomoption natural join utility where mseq=#{mseq}
+   </select>
+   
+   <select id="modifyRoom" resultType="yourstay.md.domain.roomRegisterVO" parameterType="yourstay.md.domain.roomModifyVO">
+       select * from accommodation natural join accomoption natural join utility natural join image natural join member where aid=#{aid} and mseq=#{mseq}
+   </select>
+</mapper>

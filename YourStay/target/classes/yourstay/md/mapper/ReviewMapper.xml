@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.ReviewMapper">
+
+	<select id="getUser" resultType="yourstay.md.domain.reviewVO">
+      select * from review natural join member where memail=#{memail}
+   </select>
+   
+   <!-- 게시판 글 작성 -->
+	<insert id="insert" parameterType="yourstay.md.domain.reviewVO" useGeneratedKeys="true" keyProperty="renum">
+	    <selectKey keyProperty="renum" resultType="long" order="BEFORE">
+	    	SELECT review_seq.NEXTVAL FROM DUAL
+	    </selectKey>
+	    INSERT INTO REVIEW(    RENUM 
+	    					   , AID
+	    					   , MSEQ
+	   					       , POINT 
+	   					       , REVIEW 
+	   					         )
+	                  VALUES(    #{renum}
+	                  		   , #{aid}
+	                  		   , #{mseq}
+	                 		   , #{point}
+	                 		   , #{review}
+	                 			  )
+   
+    </insert>
+   <insert id="insertFile" parameterType="hashMap">
+		INSERT INTO review_file(
+			FILE_NO,
+			RENUM,
+			ORG_FILE_NAME,
+			STORED_FILE_NAME,
+			FILE_SIZE
+		)VALUES(
+			review_file_seq.NEXTVAL,
+			#{renum},
+			#{org_file_name},
+			#{stored_file_name},
+			#{file_size}
+		)
+    </insert>
+    <select id="select" resultType="yourstay.md.domain.resultVO">
+      select * from member where mseq=#{mseq}
+   </select>
+</mapper>

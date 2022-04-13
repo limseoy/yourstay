@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.MyPageMapper">
+	<!-- 찜목록 -->
+	<select id="getWishAid" resultType="yourstay.md.domain.WishListVO">
+		SELECT * FROM wishlist WHERE mseq = #{mseq}
+	</select>
+	
+	<select id="getWishList" resultType="yourstay.md.domain.Accommodation">
+		SELECT * FROM accommodation WHERE aid IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item.aid}
+		</foreach>
+	</select>
+</mapper>

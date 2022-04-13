@@ -1,257 +1,332 @@
-<%@ page contentType="text/html;charset=utf-8" session="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
-	<head>
-		<!-- Bootstrap core CSS -->
-		<link href="/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/css/blog.css" rel="stylesheet">
-		<link href="/css/index.css" rel="stylesheet">
-	
-		<meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" /> 
-        <!-- 모달 -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="/css/bootstrap.min.css" />
-        <script src="/js/bootstrap.min.js"></script>
-        
-        <!-- DataTimePicker template -->
-		<script type="text/javascript"
-		   src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script type="text/javascript"
-		   src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-		<script type="text/javascript"
-		   src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-		<link rel="stylesheet"
-		   href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-		<link rel="stylesheet"
-		   href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
-	   <!-- 인원수 -->
-	   <link rel="stylesheet" href="../css/airDnDCSS.css">
-	
-	</head>
-	<body>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-		</script>
-		<header class="blog-header py-3" style="margin-bottom: 5%;">
-      		<div class="row flex-nowrap justify-content-between align-items-center">
-       		<div class="col-4 pt-1"></div>
-	        <div class="col-4 text-center">
-	          <a class="blog-header-logo text-dark" href="#" style="text-decoration:none">YourTrip</a>
-	        </div>
-      		<div class="col-4 d-flex justify-content-end align-items-center">
-         	<a class="link-secondary" href="#" aria-label="Search">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
-         	</a>
-         	<a class="btn btn-sm btn-outline-secondary" href="login/loginPage">Sign up</a>
-      	    </div>
-     	    </div>
-  		</header>
- 
-        <div class="container px-4 px-lg-5">
-            <!-- Heading Row-->
-            <div class="row gx-4 gx-lg-5 align-items-center my-5 ">
-                <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg" alt="..." /></div>
-                <div class="col-lg-5">
-                    <h6 class="font-weight-light">예약한 숙소이름</h6>
-                    </br>
-                    <h3>숙소정보</h3>
-                    </br>
-                 	<span class="badge bg-warning text-dark">평점</span>
-                </div>
-            </div>
-           <!-- content-->
-            <div class="card text-white bg-secondary my-2 py-2 h-70">
-                 <div class="card-header"><p class="text-white m-0 text-center">예약 정보</p></div>
-                <div class="card-body">
-                   <p class="text-white m-0">날짜</p></br>
-                   <div class="sort">
-                   <span class="text-white">-월 ~일 </span>
-                   <button type="button" class="btn text-white move-left" data-bs-toggle="modal" data-bs-target="#date">수정</button>
-                   </div>
-                   <p class="text-white m-0">인원수</p></br>
-                   <div class="sort">
-                   <span class="text-white">몇 명</span>
-                   <button type="button" class="btn text-white move-left" data-bs-toggle="modal" data-bs-target="#people">수정</button>
-                   </div>
-                </div>
-            </div>
-             <div class="card text-white bg-secondary my-2 py-2 h-70 ">
-           		<div class="card-header"><p class="text-white m-0 text-center">가격 정보</p></div>
-                <div class="card-body">
-	                <p class="text-white m-0">요금 세부정보</p></br>
-	                <p class="text-white">가격</p>
-	               	<p class="text-white">서비스 수수료</p>
-	                <p class="text-white">숙박세와 수수료</p>
-	                <p class="text-white">합계</p>
-	                <div class="text-lg-end text-center">
-	                <button type="button" class="btn text-white" style="flaot:right;" data-bs-toggle="modal" data-bs-target="#price">가격 상세보기</button>
-	                </div>
-                </div>
-            </div>
-             <div class="card text-white bg-secondary my-2 py-2 h-70 ">
-           		<div class="card-header"><p class="text-white m-0 text-center">환불 정책</p></div>
-                <div class="card-body">
-	                <p class="text-white m-3">날짜 전까지 무료 취소가 가능합니다. 날짜 체크인 전에 취소하면 부분 환불을 받으실 수 있습니다.</p>  
-	                <a data-toggle="modal" href="#myModal1" class="m-3">자세히 알아보기</a>
-	                <p class="text-white m-3">코로나19로 인한 여행 문제에는 정상참작이 가능한 상황 정책이 적용 되지 않습니다.</p>
-	               	 <a data-toggle="modal" href="#myModal2" class="m-3">자세히 알아보기</a>
-                </div>
-            </div>
-             <div class="card text-white bg-secondary my-2 py-2 h-70 ">
-                <div class="card-body">
-	                <p class="text-white m-3">아래 버튼을 선택함으로써, 호스트가 설정한 숙소 이용규칙, 
-	                에어비앤비 코로나19 방역 수칙 및 게스트 환불 정책에 동의합니다.</p>
-	               	<div class="d-grid gap-2">
-  					<button class="btn btn-warning text-white" type="button">예약 완료하기</button>
-	                </div>
-                </div>
-            </div>
+<head>
+<title>YourTrip</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author"
+   content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Hugo 0.88.1">
+<!-- bootstrap-css -->
+<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"
+   media="all" />
+<script src="///js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet"
+   href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 
-<!-- Modal -->
+<link rel="stylesheet" href="../css/airDnDCSS.css">
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/reset.css">
 
-<div class="modal fade" id="date" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">달력</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- 구글웹폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+   href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
+   rel="stylesheet">
+<!-- Fontawesome -->
+<link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+   integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+   crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script>
+   $(document)
+         .ready(
+               function() {
+                  var checkShow = false;
+                  $("#searchSubmitBtn")
+                        .click(
+                              function() {
+                                 //alert($("#city").val() + " , " + $("#datepicker1").val() + " ~ " + $("#datepicker2").val() +" , "+$("#personnel option:selected").val());
+                                 if ($("#aloc").val() == "모든 위치"
+                                       || $("#aloc").val() == "") {
+                                    alert("위치를 입력해 주세요.");
+                                 } else if ($("#datepicker1").val() == "모든 날짜"
+                                       || $("#datepicker1").val() == "") {
+                                    alert("출발 날짜를 입력해 주세요.");
+                                 } else if ($("#datepicker2").val() == "모든 날짜"
+                                       || $("#datepicker2").val() == "") {
+                                    alert("도착 날짜를 입력해 주세요.");
+                                 } else {
+                                    location.href = "../searchInListFromMainGet.do?aloc="
+                                          + $("#aloc").val()
+                                          + "&startdate="
+                                          + $("#datepicker1")
+                                                .val()
+                                          + "&deadline="
+                                          + $("#datepicker2")
+                                                .val()
+                                          + "&person="
+                                          + $("#personnel").val();
+                                 }
+                              });
+                  $("#datepicker1").datepicker({
+                     dateFormat : 'yy-mm-dd'
+                  });
+                  $("#datepicker2").datepicker({
+                     dateFormat : 'yy-mm-dd'
+                  });
+                  $("#rollDown").hide();
+                  $("#tempImg").click(function() {
+                     if (checkShow == false) {
+                        $("#rollDown").show();
+                        checkShow = true;
+                     } else {
+                        $("#rollDown").hide();
+                        checkShow = false;
+                     }
+                  });
+                  $("#logo").click(function() {
+                     window.location = "index.jsp";
+                  });
+               });
+</script>
+<!--// bootstrap-css -->
+<!-- css -->
+<link rel="stylesheet" href="../css/blog.css" type="text/css"
+   media="all" />
+<%
+	String memail = (String) session.getAttribute("memail");
+%>
+</head>
+<style>
+.bd-placeholder-img {
+   font-size: 1.125rem;
+   text-anchor: middle;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   user-select: none;
+}
+
+@media ( min-width : 768px) {
+   .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+   }
+}
+</style>
+<body>
+
+   <div class="container">
+      <header class="blog-header py-3">
+         <div
+            class="row flex-nowrap justify-content-between align-items-center">
+            <div class="col-4 pt-1">
+            </div>
+            <div class="col-4 text-center">
+               <a class="blog-header-logo text-dark" href="/">YourStay</a>
+            </div>
+            <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 10px; padding-top: 14px;">
+               <a class="link-secondary" href="#" aria-label="Search"> 
+				<i class='fa fa-bell' style="margin-right: 30px;"></i>
+                     <title>Search</title><circle cx="10.5" cy="10.5"
+                        r="7.5" />
+                     <path d="M21 21l-5.2-5.2" /></svg>
+               </a> 
+               <c:choose>
+         <c:when test="${msg =='failure'}">
+        <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
+        </c:when> 
+         <c:when test="${msg == null}"> <!-- 로그인X -->
+         
+         <% 
+            if(memail == null){
+         %>
+           <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
+          <%
+            }else{
+         %>
+         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail %>님 반갑습니다!</a>
+         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
+         <%} %>
+         </c:when> 
+         <c:otherwise>
+         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail%>님 반갑습니다!</a>
+         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
+         </c:otherwise>
+         </c:choose>
+            </div>
+         </div>
+      </header>
+
+      <div class="nav-scroller py-1 mb-2">
+         <nav class="nav d-flex justify-content-between">
+         </nav>
       </div>
-  <div class="modal-body">
-           <div class="form-group">
-              <div class="input-group date" id="datetimepicker1"
-                 data-target-input="nearest">
-                 <input type="text" class="form-control datetimepicker-input"
-                    data-target="#datetimepicker1" placeholder="Start-date"
-                    onkeyup="invalid()" id="startdate" name="startdate">
-                 <div class="input-group-append" data-target="#datetimepicker1"
-                    data-toggle="datetimepicker">
-                    <div class="input-group-text">
-                       <i class="fa fa-calendar"></i>
-                      </div>
-                 </div>
-              </div>
-           </div>
-           <div class="form-group">
-              <div class="input-group date" id="datetimepicker2"
-                 data-target-input="nearest">
-                 <input type="text" class="form-control datetimepicker-input"
-                    data-target="#datetimepicker2" placeholder="Deadline"
-                    onkeyup="invalid()" id="deadline" name="deadline">
-                 <div class="input-group-append" data-target="#datetimepicker2"
-                    data-toggle="datetimepicker">
-                    <div class="input-group-text">
-                       <i class="fa fa-calendar"></i>
-                    </div>
-                 </div>
-              </div>
-           </div>
-       </div>
-  <div class="modal-footer">
- 		<button type="button" class="btn btn-primary">수정</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        
-     </div>
-    </div>
    </div>
-  </div>
-     
 
-	<!-- Modal -->
-<div class="modal fade" id="people" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">인원 수</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+   <main class="container">
+      <div id="searchBar">
+         <form id="seatrchForm">
+            <div id="search" class="radius">
+               <p id="indexH1">YourStay 숙소 찾기</p>
+               <div id="cityDiv">
+                  <p class="searchFont">위치</p>
+                  <input type="text" id="aloc" name="aloc" placeholder="지역명을 입력해주세요." style="width: 60%;height: 50%;border: none;">
+               </div>
+               <div id="datepickerDiv" />
+               <div class='col-md-3 col-xs-4'>
+                  <div class="form-group">
+                     <div class="input-group date" id="datetimepicker1"
+                        data-target-input="nearest">
+                        <input type="text" id="datepicker1" name="startdate"
+                           placeholder="날짜를 선택해주세요." style="margin-left: 7px!important;">
+                        <div class="input-group-append" data-target="#datetimepicker1"
+                           data-toggle="datetimepicker">
+                           <div class="input-group-text">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class='col-md-3 col-xs-4'>
+                  <div class="form-group">
+                     <div class="input-group date" id="datetimepicker2"
+                        data-target-input="nearest">
+                        <input type="text" id="datepicker2" name="deadline"
+                           placeholder="날짜를 선택해주세요." style="margin-left: 7px!important;">
+                        <div class="input-group-append" data-target="#datetimepicker2"
+                           data-toggle="datetimepicker">
+                           <div class="input-group-text">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div id="personnelDiv">
+               <p class="searchFont">인원</p>
+               <select id="personnel" name="person">
+                  <option value=1>인원 1명</option>
+                  <option value=2>인원 2명</option>
+                  <option value=3>인원 3명</option>
+                  <option value=4>인원 4명</option>
+                  <option value=5>인원 5명</option>
+                  <option value=6>인원 6명</option>
+               </select>
+            </div>
+            <input type="button" id="searchSubmitBtn" value="검색"
+               style="cursor: pointer;">
       </div>
-      <div class="modal-body">
-        <div id="personnelDiv">
-        <p class="searchFont">인원수를 선택하세요</p>
-           <select id="personnel" name="apeople">
-              <option value=1>인원 1명</option>
-              <option value=2>인원 2명</option>
-              <option value=3>인원 3명</option>
-              <option value=4>인원 4명</option>
-              <option value=5>인원 5명</option>
-              <option value=6>인원 6명</option>
-           </select>
-        </div>
+      </form>
       </div>
-      <div class="modal-footer">
-     	<button type="button" class="btn btn-primary">수정</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        
-      </div>
+      <div background-repeat:no-repeat; width: 100%;"></div>
+   <!--   <div class=" mb-4 text-white flower-bg">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 fst-italic"></h1>
+      <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+      <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
     </div>
-  </div>
-</div>
- 	<!-- Modal -->
-<div class="modal fade" id="price" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">가격 상세보기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div> -->
+   <div class="image-box slider">
+      <div class="img-w">
+         <p class="img-w-p">설레는 다음 여행을 위한 아이디어</p>
       </div>
-      <div class="modal-body">
-                가격정보를 선택하세요
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>	
-	 	<!-- Modal -->
-<div class="modal fade" id="myModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">자세히 알아보기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-                환불정책 알아보기1
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-	 	<!-- Modal -->
-<div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">자세히 알아보기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-               환불 정책알아보기2
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-	<script>
-		$('#testBtn').click(function(e){
-			e.preventDefault();
-			$('#testModal').modal("show");
-		});
-	</script>
-	
+      <img class="image-thumbnail" src="../images/river.jpg">
+   </div>
 
+   <div class="row mb-2">
+      <div class="col-md-6">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="../images/river.jpg"
+                  alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="../images/river.jpg"
+                  alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="../images/river.jpg"
+                  alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="../images/river.jpg"
+                  alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+         </div>
+      </div>
+   </div>
+   <!-- 슬라이드 -->
+      <div id="carouselExampleCaptions" class="carousel slide"
+         data-bs-ride="carousel">
+         <div class="carousel-indicators">
+            <button type="button"
+               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+               class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button"
+               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+               aria-label="Slide 2"></button>
+            <button type="button"
+               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+               aria-label="Slide 3"></button>
+         </div>
+         <div class="carousel-inner">
+            <div class="carousel-item active"
+               style="background-image: url('https://source.unsplash.com/LAaSoL0LrYs/1920x1080')">
+               <div class="carousel-caption">
+                  <h5>First slide label</h5>
+                  <p>Some representative placeholder content for the first
+                     slide.</p>
+               </div>
+            </div>
+            <div class="carousel-item"
+               style="background-image: url('https://source.unsplash.com/bF2vsubyHcQ/1920x1080')">
+               <div class="carousel-caption">
+                  <h5>Second slide label</h5>
+                  <p>Some representative placeholder content for the second
+                     slide.</p>
+               </div>
+            </div>
+            <div class="carousel-item"
+               style="background-image: url('https://source.unsplash.com/szFUQoyvrxM/1920x1080')">
+               <div class="carousel-caption">
+                  <h5>Third slide label</h5>
+                  <p>Some representative placeholder content for the third
+                     slide.</p>
+               </div>
+            </div>
+         </div>
+         <button class="carousel-control-prev" type="button"
+            data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+         </button>
+         <button class="carousel-control-next" type="button"
+            data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+         </button>
+      </div>
+   </main>
    <!-- 푸터 -->
    <div class="container">
       <footer class="py-3 my-4">
@@ -262,7 +337,7 @@
                class="nav-link px-2 text-muted">Features</a></li>
             <li class="nav-item"><a href="#"
                class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
             <li class="nav-item"><a href="#"
                class="nav-link px-2 text-muted">About</a></li>
@@ -270,5 +345,5 @@
          <p class="text-center text-muted">© 2021 Company, Inc</p>
       </footer>
    </div>
-	</body>
+</body>
 </html>

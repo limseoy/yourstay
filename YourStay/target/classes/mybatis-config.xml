@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE configuration
-  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
    <typeAliases>
-      <typeAlias alias="Your" type="your.md.domain.Your"/>
+      <typeAlias alias ="MemberVO" type="yourstay.md.domain.MemberVO"/>
+      <typeAlias alias ="Accomoption" type="yourstay.md.domain.Accomoption"/>
+      <typeAlias alias ="Image" type="yourstay.md.domain.Image"/>
+      <typeAlias alias ="resultVO" type="yourstay.md.domain.resultVO"/>
+      <typeAlias alias ="WishListVO" type="yourstay.md.domain.WishListVO"/>
+      <typeAlias alias ="Accommodation" type="yourstay.md.domain.Accommodation"/>
+      <typeAlias alias ="Reservation" type="yourstay.md.domain.Reservation"/>
+      <typeAlias alias ="ReservationDateVO" type="yourstay.md.domain.ReservationDateVO"/>
    </typeAliases>
-   
-   <!--  
-   <mappers>
-        <mapper resource="your/md/mapper/Yourstay.xml"/>   
-   </mappers>
-   -->
-
-
 </configuration>

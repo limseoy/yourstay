@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.AccommodationMapper">
+    <!-- 작업순서
+       1. 이미지테이블 insert
+       2. 등록하는 회원번호(mseq) 값 가져오기
+       3. 숙소테이블 insert
+       4. 숙소옵션테이블 insert
+       5. utility 테이블 insert
+     -->
+     
+   <!-- 회원 아이디 가져오기 -->
+   <select id="getRegisterMemberSeq"
+      resultType="yourstay.md.domain.MemberVO">
+      SELECT * FROM member WHERE mseq = #{mseq}
+   </select>
+   
+      <!-- 숙소 등록 -->
+   <insert id="insertAccom"
+      parameterType="yourstay.md.domain.roomRegisterVO"  useGeneratedKeys="true" keyProperty="aid">
+      <selectKey keyProperty="aid" resultType="long" order="BEFORE">
+          SELECT accommodation_seq.NEXTVAL FROM DUAL
+       </selectKey>
+      insert
+      into accommodation (aid, aname, aloc, aprice, atype, apeople, mseq, anotice,amap)
+      values
+      (#{aid}, #{aname},#{aloc},#{aprice},#{atype},#{apeople}, #{mseq},#{anotice},#{amap})
+   </insert>
+   
+   <insert id="insertOption"
+      parameterType="yourstay.md.domain.roomRegisterVO">
+      insert
+      into accomoption (oid,aid, rnum,wifi ,tnum , bnum, wave,refg , bd,tv ,pet ,kitchen ,wash ,parking ,fire , smoking,roof,bbq)
+      values
+      (accomoption_seq.nextval, #{aid},#{rnum},#{wifi},#{tnum},#{bnum},#{wave},#{refg},#{bd},#{tv},#{pet},#{kitchen},#{wash},#{parking},#{fire},#{smoking},#{roof},#{bbq}) 
+   </insert>
+   
+   <insert id="insertUtil"
+      parameterType="yourstay.md.domain.roomRegisterVO">
+      insert
+	  into utility (utid, aid, ures, ucafe, ucon,uact)
+      values
+      (utility_seq.nextval,#{aid}, #{ures},#{ucafe},#{ucon},#{uact})   
+   </insert>
+   
+   <insert id="insertFile" parameterType="hashMap">
+       
+       INSERT INTO image(  iid 
+                         , org_file_name
+                         , stored_file_name
+                         , file_path 
+                         , aid
+                              )
+                     VALUES(    image_seq.nextval
+                              , #{org_file_name}
+                              , #{stored_file_name}
+                              , #{file_path}
+                              , #{aid}
+                               )
+    </insert>
+    <update id="updateAccom" parameterType="yourstay.md.domain.roomRegisterVO"  useGeneratedKeys="false" keyProperty="aid">
+		update accommodation set aname=#{aname}, aloc=#{aloc}, aprice=#{aprice}, apoint=#{apoint}, 
+		atype=#{atype}, apeople=#{apeople}, anotice=#{anotice}, amap=#{amap} where aid=#{aid}
+	</update>
+	
+   <update id="updateOption"
+     parameterType="yourstay.md.domain.roomRegisterVO">
+     update accomoption set rnum=#{rnum}, wifi=#{wifi}, tnum=#{tnum}, bnum=#{bnum}, 
+	wave=#{wave}, refg=#{refg}, bd=#{bd}, tv=#{tv}, pet=#{pet}, kitchen=#{kitchen}
+	, wash=#{wash},parking=#{parking}, fire=#{fire}, smoking=#{smoking}, roof=#{roof} , bbq=#{bbq} where aid=#{aid}
+     
+  </update>
+  
+   <update id="updateUtil"
+      parameterType="yourstay.md.domain.roomRegisterVO">
+      update utility set ures=#{ures}, ucafe=#{ucafe}, ucon=#{ucon}, uact=#{uact} where aid=#{aid}
+   </update>
+   
+   <update id="updateFile" parameterType="hashMap">
+      
+      update image set org_file_name=#{org_file_name}, stored_file_name=#{stored_file_name}, file_path=#{file_path} where aid=#{aid}
+      
+   </update>
+   
+   <delete id="requestDelete" parameterType="long">
+   		delete from accommodation where aid=#{aid}
+   </delete>
+   <!-- 숙소 이미지 불러오기 -->
+    <select id="selectRoomImage" resultType="yourstay.md.domain.Image">
+    	select * from image where aid=#{aid}
+    </select>
+    
+</mapper>
+<!-- resultType : 결과반환 Object / return 값이라고 생각하면 될 듯? parameterType : 조회결과 
+   Object -->

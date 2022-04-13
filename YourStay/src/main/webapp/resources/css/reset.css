@@ -1,4 +1,4 @@
-/* footer ¿µ¿ª */
+/* footer      */
 
 .footer {
     height: 350px !important;
@@ -23,6 +23,6 @@
     color: #fff;
     line-height: 25px;
 }
-* {
-  font-family: "Do Hyeon", "Open Sans" !important;
+*:not(.fa) {
+  font-family: 'Poor Story', cursive;
 }

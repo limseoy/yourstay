@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.ReservationMapper">
+
+	<!-- 예약테이블 등록 -->
+	<insert id="insertReservation"
+		parameterType="yourstay.md.domain.Reservation"
+		useGeneratedKeys="true" keyProperty="rid">
+		<selectKey keyProperty="rid" resultType="long"
+			order="BEFORE">
+			SELECT reservation_seq.NEXTVAL FROM DUAL
+		</selectKey>
+		insert
+		into reservation values
+		(#{rid},#{aid},#{mseq},#{rstart},#{rend},#{rpeople},#{rprice})
+	</insert>
+	<!-- 예약날짜테이블 등록 -->
+	<insert id="insertReservationDate"
+		parameterType="yourstay.md.domain.ReservationDateVO">
+		insert
+		into reservationdate values
+		(resdate_seq.nextval,#{rid},#{aid},#{rdate})
+	</insert>
+	<!-- 예약된 날짜 조회 -->
+	<select id="selectReservationDate"
+		resultType="yourstay.md.domain.ReservationDateVO">
+		select * from reservationdate where aid=#{aid} and rdate between
+		to_date(#{rstart},'yyyy-MM-dd')
+		and to_date(#{rend},'yyyy-MM-dd')
+	</select>
+
+</mapper>

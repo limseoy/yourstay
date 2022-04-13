@@ -1,7 +1,7 @@
 package your.md.controller;
 
-import your.md.controller.ExampleService;
 import junit.framework.TestCase;
+import yourstay.md.controller.ExampleService;
 
 public class ExampleServiceTests extends TestCase {
 

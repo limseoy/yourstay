@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yourstay.md.mapper.SearchMapper">
+	<select id="getAccommodationListBySearchBar" parameterType="hashmap" resultType="yourstay.md.domain.Accommodation">
+		select * from accommodation where not exists (
+			select distinct aid, rdid, rdate 
+			from reservationdate
+			where rdate between to_date(#{startdate},'yyyy-MM-dd') 
+				and to_date(#{deadline},'yyyy-MM-dd') 
+		) 
+		and aloc like '%'||#{aloc}||'%'
+		and apeople <![CDATA[>=]]> #{apeople}
+	</select>
+	<select id="getAccommodationByAccommodationId" resultType="yourstay.md.domain.resultVO">
+      select * from 
+      accomoption natural join member natural join utility natural join accommodation where aid=${value}
+   </select>
+   <select id="getReviewByAccommodationId" resultType="yourstay.md.domain.reviewVO">
+   		select * from review natural join member where aid = #{aid}
+   </select>
+</mapper>
+<!-- resultType : 결과반환 Object / return 값이라고 생각하면 될 듯?
+	 parameterType : 조회결과 Object
+ -->

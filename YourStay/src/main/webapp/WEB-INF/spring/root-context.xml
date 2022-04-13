@@ -3,44 +3,49 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-      <property name="driverClassName"
-         value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-      <property name="jdbcUrl"
-         value="jdbc:log4jdbc:oracle:thin:@localhost:1521:JAVA"></property>
-      <property name="username" value="your"></property>
-      <property name="password" value="java"></property>
-   </bean>
-   
-   <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
-      destroy-method="close">
-      <constructor-arg ref="hikariConfig" />
-   </bean>
-   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-            <property name="dataSource" ref="dataSource"></property>
-            <property name="configLocation"
-                value="classpath:/mybatis-config.xml"/>
-   </bean>
-   
-   <mybatis-spring:scan base-package="your.md.mapper"/>
-   <context:component-scan base-package="your.md.mapper"/>
-   <context:component-scan base-package="your.md.service"/>
-   
-   <context:annotation-config></context:annotation-config>
-   <context:component-scan base-package="soo.md.aop"/>
-   <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-   
-   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="driverClassName"
+	       value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+	    <property name="jdbcUrl"
+	       value="jdbc:log4jdbc:oracle:thin:@localhost:1521:JAVA"></property>
+	    <property name="username" value="your"></property>
+	    <property name="password" value="java"></property>
+	 </bean>
+	 <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+	    destroy-method="close">
+	    <constructor-arg ref="hikariConfig" />
+	 </bean>
+	 
+	<!-- sqlSessionFactoryBean 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
-   </bean>
-   <tx:annotation-driven/>
-   </beans>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:yourstay/md/mapper/MemberMapper.xml</value>
+				<value>classpath:yourstay/md/mapper/SearchMapper.xml</value>
+				<value>classpath:yourstay/md/mapper/ReviewMapper.xml</value>
+				<value>classpath:yourstay/md/mapper/RoomHistoryMapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- SqlSessionTemplate 설정 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- component scanning 설정 -->	
+	<context:component-scan base-package="yourstay.md">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+     <mybatis-spring:scan base-package="yourstay.md.mapper"/>
+     <context:component-scan base-package="yourstay.md.mapper"/>
+     <context:component-scan base-package="yourstay.md.fileset"></context:component-scan>
+</beans>
