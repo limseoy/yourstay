@@ -39,13 +39,13 @@ public class LoginRestController {
 		String memail = request.getParameter("memail");
 		String mpwd = request.getParameter("mpwd");
 		ModelAndView mv = new ModelAndView();
-		//À¯È¿¼º °Ë»ç(Å¬¶óÀÌ¾ðÆ®Ãø View:js, ¼­¹öÃø Controller:java)
+		//ï¿½ï¿½È¿ï¿½ï¿½ ï¿½Ë»ï¿½(Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ View:js, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Controller:java)
 		log.info("loginCon check //email: "+memail+", pwd: "+mpwd);
 		int result = mapper.login(memail, mpwd);
-		log.info("·Î±×ÀÎ °á°ú(3>¼º°ø) : " + result);		
+		log.info("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(3>ï¿½ï¿½ï¿½ï¿½) : " + result);		
 		
-		if(result == YES_ID_PWD) { //·Î±×ÀÎ ¼º°ø½Ã
-			log.info("·Î±×ÀÎ ¼º°ø");	
+		if(result == YES_ID_PWD) { //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			log.info("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");	
 			MemberVO m = mapper.getUser(memail);
 			session = request.getSession();
 			mv.addObject("msg", "success");

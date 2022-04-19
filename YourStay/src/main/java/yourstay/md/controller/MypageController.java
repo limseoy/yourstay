@@ -30,7 +30,6 @@ import yourstay.md.domain.reviewVO;
 import yourstay.md.domain.roomRegisterVO;
 import yourstay.md.mapper.MemberMapper;
 import yourstay.md.mapper.ReviewMapper;
-import yourstay.md.mapper.SearchMapper;
 import yourstay.md.service.AccommodationService;
 import yourstay.md.service.FileService;
 import yourstay.md.service.MyPageService;
@@ -54,8 +53,7 @@ public class MypageController {
 	private RoomHistoryService roomService;
 	@Autowired
 	private MyRoomService myRoomService;
-	@Autowired
-	private SearchMapper seacrhmapper;
+
 	
 	
 	@GetMapping(value="/home")

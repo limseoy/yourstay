@@ -2,6 +2,8 @@ package yourstay.md.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.log4j.Log4j;
 import yourstay.md.domain.Image;
+import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.Reservation;
 import yourstay.md.domain.resultVO;
 import yourstay.md.mapper.SearchMapper;
@@ -29,27 +32,32 @@ public class ReservationRestController {
 	ReservationService reservservice;
 
 	@PostMapping("/reservation.do")
-	public void checkReservation(Reservation reservationVO) {
+	public ModelAndView checkReservation(ModelAndView mv,Reservation reservationVO,HttpSession session) {
 		log.info("ReservationController // checkReservation reservationVO :" + reservationVO);
 		reservservice.ReservationDateS(reservationVO);
+		MemberVO mvo = (MemberVO)session.getAttribute("loginOKUser");
+		long mseq = mvo.getMseq();
+		mv.setViewName("mypage/roomReservation");
+		return mv;
+		
 	}
 	/*
-	 * ¼÷¼Ò»ó¼¼³»¿ª ÆäÀÌÁö ÀÌµ¿
+	 * ï¿½ï¿½ï¿½Ò»ó¼¼³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	 */
 	
 	@PostMapping("/reservdetail")
 	public ModelAndView reserdetailPage(@RequestParam Integer aid, @RequestParam String rstart, @RequestParam String rend, @RequestParam long resultprice, @RequestParam long days) {
 		log.info("reserdetailPage : " + aid);
 		log.info("ReservationCon reserdetailPage //// Integer aid : "  + aid+ ", startDate : "+ rstart+", endDate : "+ rend);
-		List<Image> roomImage = accommodationService.selectRoomImageS(aid); //¼÷¼ÒÀÌ¹ÌÁö
+		List<Image> roomImage = accommodationService.selectRoomImageS(aid); //ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½
 		String ipath1 = roomImage.get(0).getStored_file_name(); 
 		List<resultVO> rlist = searchMapper.getAccommodationByAccommodationId(aid);
 		resultVO rVO = rlist.get(0);
 		rVO.setIpath1(ipath1);
-		rVO.setRstart(rstart);//»ç¿ëÀÚ¼±ÅÃ ½ÃÀÛ³¯Â¥ Àû¿ë
-		rVO.setRend(rend);//»ç¿ëÀÚ¼±ÅÃ ³¡³¯Â¥ Àû¿ë
-		rVO.setDays(days);//¼÷¹ÚÀÏ¼ö Àû¿ë
-		rVO.setResultprice(resultprice); //ÃÖÁ¾ ±Ý¾× Àû¿ë
+		rVO.setRstart(rstart);//ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û³ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½
+		rVO.setRend(rend);//ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½
+		rVO.setDays(days);//ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+		rVO.setResultprice(resultprice); //ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 		rVO.setAid(aid);
 		
 		

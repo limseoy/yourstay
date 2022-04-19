@@ -12,6 +12,11 @@ public class MainController {
       
       return "index";
    }
+   @RequestMapping("/chat")
+   public String chat() {
+      
+      return "chat";
+   }
 
    
 //   @RequestMapping("/test")

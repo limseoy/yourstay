@@ -35,7 +35,7 @@
 	   <link rel="stylesheet" href="../css/airDnDCSS.css">
 	<%
    		String memail = (String) session.getAttribute("memail");
-		long mseq = (long) session.getAttribute("mseq");
+		long mseq = (long) session.getAttribute("mseq"); 
 	%>
 	</head>
 	<body>
