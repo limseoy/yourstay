@@ -18,4 +18,7 @@ public interface ReservationMapper {
 	 * 예약날짜테이블 조회
 	 */
 	public List<ReservationDateVO> selectReservationDate(Reservation reservationVO);
+	
+	public Long checkView(long mseq);
+	public List<ReservationDateVO> selectAidReservationDate(long aid);
 }

@@ -1,6 +1,7 @@
 package yourstay.md.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import yourstay.md.domain.MemberVO;
 
@@ -8,9 +9,10 @@ public interface MemberMapper {
 	// CRUDs
 	public MemberVO getUser(String memail);
 	public List<MemberVO> getUserList();
-	public int addUser(MemberVO user);
+	public void addUser(MemberVO user);
+	public int updateUser(MemberVO member);
 	public int removeUser(String memail);
 	
 	// Functional Methods
-	public int login(String memail, String mpwd);
+	public MemberVO login(Map<String, String> parameters);
 }

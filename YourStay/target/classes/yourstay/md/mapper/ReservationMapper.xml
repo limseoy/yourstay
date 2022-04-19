@@ -14,7 +14,7 @@
 		</selectKey>
 		insert
 		into reservation values
-		(#{rid},#{aid},#{mseq},#{rstart},#{rend},#{rpeople},#{rprice})
+		(#{rid},#{aid},#{mseq},#{rstart},#{rend},#{rpeople},#{rprice},0)
 	</insert>
 	<!-- 예약날짜테이블 등록 -->
 	<insert id="insertReservationDate"
@@ -30,5 +30,12 @@
 		to_date(#{rstart},'yyyy-MM-dd')
 		and to_date(#{rend},'yyyy-MM-dd')
 	</select>
-
+	<select id="checkView" parameterType="long" resultType="Long">
+      select count(*) from RESERVATION r, accommodation a where r.aid=a.aid and a.mseq=#{mseq} and r.checkview=0
+   </select>
+   <!-- 해당 숙소의 예약된 날짜들 출력 -->
+   <select id="selectAidReservationDate"
+      parameterType="long" resultType="yourstay.md.domain.ReservationDateVO">
+      select * from reservationdate where aid = #{aid}
+   </select>
 </mapper>

@@ -20,6 +20,16 @@
    <select id="getReviewByAccommodationId" resultType="yourstay.md.domain.reviewVO">
    		select * from review natural join member where aid = #{aid}
    </select>
+   <select id="getAccommodationByLoc" resultType="yourstay.md.domain.Accommodation">
+   		select aid, aloc from accommodation
+   </select>
+   <select id="getAccommodationListByLocation" resultType="yourstay.md.domain.Accommodation">
+   		select * from accommodation where aloc=#{aloc}
+   </select>
+   
+   <select id="getCountGuest" resultType="long">
+   		select count(*) from reservation where aid=#{aid}
+   </select>
 </mapper>
 <!-- resultType : 결과반환 Object / return 값이라고 생각하면 될 듯?
 	 parameterType : 조회결과 Object

@@ -26,19 +26,19 @@ public class FileServiceImpl implements FileService {
 	private RoomFileUtils roomFileUtils;
 	
 	@Inject
-	private ReviewMapper reviewMapper;
+	private ReviewService reviewService;
 	
 	@Inject
 	private AccommodationMapper accomoMapper;
 	
 	@Override
 	public void write(reviewVO reviewVo, MultipartHttpServletRequest mpRequest) throws Exception {
-		reviewMapper.insert(reviewVo);
+		reviewService.insert(reviewVo);
 		
 		List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(reviewVo, mpRequest); 
 		int size = list.size();
 		for(int i=0; i<size; i++){ 
-			reviewMapper.insertFile(list.get(i)); 
+			reviewService.insertFile(list.get(i)); 
 		}
 	}
 

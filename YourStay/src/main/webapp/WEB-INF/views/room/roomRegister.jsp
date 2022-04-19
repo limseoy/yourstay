@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>YourTrip</title>
+<title>YourStay</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
@@ -70,17 +70,9 @@ body, h3 {
             class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1"></div>
             <div class="col-4 text-center">
-               <a class="blog-header-logo text-dark" href="/">YourTrip</a>
+               <a class="blog-header-logo text-dark" href="/">YourStay</a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
-               <a class="link-secondary" href="#" aria-label="Search"> <svg
-                     xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                     fill="none" stroke="currentColor" stroke-linecap="round"
-                     stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
-                     viewBox="0 0 24 24">
-                     <title>Search</title><circle cx="10.5" cy="10.5" r="7.5" />
-                     <path d="M21 21l-5.2-5.2" /></svg>
-               </a>
                <c:choose>
                   <c:when test="${msg =='failure'}">
                      <a class="btn btn-secondary" href="login/loginPage"
@@ -604,14 +596,18 @@ body, h3 {
                   </main>
                </div>
                
-      <footer class="blog-footer">
-         <p>
-            Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a>
-            by <a href="https://twitter.com/mdo">@mdo</a>.
-         </p>
-         <p>
-            <a href="#">Back to top</a>
-         </p>
+      <footer class="py-3 my-4">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2022 Company, Inc</p>
       </footer>
 </body>
 </html>

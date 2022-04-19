@@ -114,10 +114,12 @@
 			   <td colspan="5">데이터가 하나도 없음</td>
 			</tr>
 		</c:if>
+		<c:if test="${memail=='admin'}">
         <div class="pull-right" style="width:100px;margin:10px 0;">
-            <a href="/board" class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;">
+            <a href="/board/write" class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;">
             등록</a>
         </div>
+        </c:if>
         <br/><br/><br/>
 
         <div id="mainHide">
@@ -126,14 +128,14 @@
                 <tr>
                     <th class="col-md-1">글번호</th>
                     <th class="col-md-2">서비스분류</th>
-                    <th class="col-md-5">제목</th>
+                    <th class="col-md-4">제목</th>
                     <th class="col-md-2">작성날짜</th>
                 </tr>
                 <tr>
                 <c:forEach items="${listResult.list}" var="board">
                     <td>${board.boardnum}</td>
                     <td>${board.category}</td>
-                    <td><a href="content.do?boardnum=${board.boardnum}">
+                    <td><a href="content?boardnum=${board.boardnum}">
 					    ${board.subject}
 					  </a></td>
                     <td>${board.rdate}</td>
@@ -192,14 +194,18 @@
            location.href="list.do?ps="+ps;
        }
     </script>	
-    <footer class="blog-footer" style="margin-top: 8%;">
-         <p>
-            Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a>
-            by <a href="https://twitter.com/mdo">@mdo</a>.
-         </p>
-         <p>
-            <a href="#">Back to top</a>
-         </p>
+      <footer class="py-3 my-4">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2021 Company, Inc</p>
       </footer>
 </body>
 </html>

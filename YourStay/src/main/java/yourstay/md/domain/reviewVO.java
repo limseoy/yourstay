@@ -25,4 +25,8 @@ public class reviewVO {
 	private String mpwd;
 	private int mcallnum;
 	private int mstate;
+	//image
+    private String ipath1;
+    private String ipath2;
+    private String ipath3;
 }

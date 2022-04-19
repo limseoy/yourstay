@@ -21,6 +21,7 @@ import lombok.extern.log4j.Log4j;
 import yourstay.md.domain.MemberVO;
 import yourstay.md.mapper.MemberMapper;
 import yourstay.md.mapper.SearchMapper;
+import yourstay.md.service.MemberService;
 
 @Log4j
 @AllArgsConstructor
@@ -31,6 +32,9 @@ public class LoginRestController {
 	MemberMapper mapper;
 	
 	@Autowired
+	MemberService memberService;
+	
+	@Autowired
 	SearchMapper searchMapper;
 	
 	@PostMapping("loginCheck.do")
@@ -39,13 +43,13 @@ public class LoginRestController {
 		String memail = request.getParameter("memail");
 		String mpwd = request.getParameter("mpwd");
 		ModelAndView mv = new ModelAndView();
-		//ï¿½ï¿½È¿ï¿½ï¿½ ï¿½Ë»ï¿½(Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ View:js, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Controller:java)
+		//À¯È¿¼º °Ë»ç(Å¬¶óÀÌ¾ðÆ®Ãø View:js, ¼­¹öÃø Controller:java)
 		log.info("loginCon check //email: "+memail+", pwd: "+mpwd);
-		int result = mapper.login(memail, mpwd);
-		log.info("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(3>ï¿½ï¿½ï¿½ï¿½) : " + result);		
+		int result = memberService.login(memail, mpwd);
+		log.info("·Î±×ÀÎ °á°ú(3>¼º°ø) : " + result);		
 		
-		if(result == YES_ID_PWD) { //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-			log.info("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");	
+		if(result == YES_ID_PWD) { //·Î±×ÀÎ ¼º°ø½Ã
+			log.info("·Î±×ÀÎ ¼º°ø");	
 			MemberVO m = mapper.getUser(memail);
 			session = request.getSession();
 			mv.addObject("msg", "success");

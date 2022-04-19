@@ -4,7 +4,6 @@
 <html>
 <head>
 <link rel="stylesheet" href="../css/login.css">
-<link rel="stylesheet" href="../css/airDnDCSS.css?ver=3"> 
 <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
 <link rel="stylesheet" href="../css/blog.css" type="text/css" media="all" />
 
@@ -192,11 +191,18 @@ $(document).ready(function(){
       </form>
    </div>
    </div> 
-<footer class="blog-footer">
-  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-  <p>
-    <a href="#">Back to top</a>
-  </p>
-</footer>
+      <footer class="py-3 my-4">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2021 Company, Inc</p>
+      </footer>
 </body>
 </html>

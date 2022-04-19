@@ -79,10 +79,23 @@ public class BoardController {
 	         return mv;
 	      }
 	   }
-	@GetMapping("content.do")
-	   public ModelAndView content(long boardnum) {
-	      Board board = boardService.getBoard(boardnum);
-	      ModelAndView mv = new ModelAndView("board/content", "board", board);
+	@GetMapping("content")
+   public ModelAndView content(long boardnum) {
+      Board board = boardService.getBoard(boardnum);
+      ModelAndView mv = new ModelAndView("board/content", "board", board);
+      
+      return mv;
+   }
+	@GetMapping("write")
+   public ModelAndView write() {
+      ModelAndView mv = new ModelAndView("board/write");
+      
+      return mv;
+   }
+	@GetMapping("modify")
+	   public ModelAndView modify(long boardnum) {
+		  Board board = boardService.getBoard(boardnum);
+	      ModelAndView mv = new ModelAndView("board/modify", "board", board);
 	      
 	      return mv;
 	   }

@@ -19,10 +19,10 @@
 	    insert into BOARD values(BOARD_SEQ.nextval, #{category}, #{subject}, #{content}, SYSDATE)
 	</insert>
 	<update id="update" parameterType="yourstay.md.domain.Board">
-		update BOARD set category=#{category}, SUBJECT=#{subject}, CONTENT=#{content} where boardnum = #{boardnum}
+		update BOARD set category=#{category}, SUBJECT=#{subject}, CONTENT=#{content}, RDATE=SYSDATE where boardnum = #{boardnum}
 	</update>
 	<delete id="delete" parameterType="long">
-		delete from BOARD where SEQ = #{seq}
+		delete from BOARD where boardnum = #{boardnum}
 	</delete>
 	<!-- for Ajax -->
 	<select id="selectBySeq2" resultType="yourstay.md.domain.Board" parameterType="long">

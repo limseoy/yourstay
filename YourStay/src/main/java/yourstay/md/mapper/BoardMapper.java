@@ -16,7 +16,7 @@ public interface BoardMapper {
 	
 	void insert(Board board);
 	void update(Board board);
-	void delete(long seq);
+	void delete(long boardnum);
 	Board selectBySeq2(long seq);
 	List<Board> selectByName(String writer);
 }

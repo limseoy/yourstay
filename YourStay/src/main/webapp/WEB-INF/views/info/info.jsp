@@ -48,44 +48,121 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
-   $(function() {
-      $("#from").datepicker({
-         dateFormat : 'yy-mm-dd'
-      });
-      $("#to").datepicker({
-         dateFormat : 'yy-mm-dd'
-      });
-      var from = $("#from").datepicker({
-         defaultDate : "+1w",
-         changeMonth : true,
-         numberOfMonths : 1
-      }).on("change", function() {
-         console.log("test1");
-         to.datepicker("option", "minDate", getDate(this));
-      }), to = $("#to").datepicker({
-         defaultDate : "+1w",
-         changeMonth : true,
-         numberOfMonths : 1
-      }).on("change", function() {
-         console.log("test2");
-         from.datepicker("option", "maxDate", getDate(this));
-      });
+//제외 할 날짜 배열
+var disabledDays = [];
+ <c:forEach items="${datelist}" var="dlist">
+   console.log("${dlist.rdate}");
+   disabledDays.push("${dlist.rdate}");
+</c:forEach>  
+console.log(disabledDays);
 
-      function getDate(element) {
-         var date;
-         try {
-            date = $.datepicker.parseDate('yy-mm-dd', element.value);
-         } catch (error) {
-            date = null;
-         }
-         return date;
+// 날짜를 나타내기 전에(beforeShowDay) 실행할 함수
+function disableSomeDay(date) {
+   console.log("disableSomeDay 실행");
+   console.log(disabledDays);
+   var month = date.getMonth()+1;
+   var dates = date.getDate();
+   var year = date.getFullYear();
+   var format = year+"-"+(("00"+month.toString()).slice(-2))+"-"+(("00"+dates.toString()).slice(-2));
+   console.log('Checking (raw): ' + year + '-' + month + '-' + dates);
+   console.log('format: ' + format);
+   
+   // 배열에 해당하는 날짜는 0번째 index에 false를 담아 리턴해준다.
+   for (i = 0; i < disabledDays.length; i++) {
+      if($.inArray(format,disabledDays) != -1) {// disabledDays 배열내에서 해당 날짜가 있을시
+         console.log("False");
+         return [ false ];
       }
+   }
+   console.log("True");
+   return [ true ];
+}
+
+$(function() {
+   $("#from").datepicker({
+      dateFormat: 'yy-mm-dd',
+       prevText: '이전 달',
+       nextText: '다음 달',
+       monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+       monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+       dayNames: ['일','월','화','수','목','금','토'],
+       dayNamesShort: ['일','월','화','수','목','금','토'],
+       dayNamesMin: ['일','월','화','수','목','금','토'],
+       showMonthAfterYear: true,
+       changeMonth: true,
+       changeYear: true,
+       yearSuffix: '년',
+       beforeShowDay: disableSomeDay
    });
+   $("#to").datepicker({
+      dateFormat: 'yy-mm-dd',
+       prevText: '이전 달',
+       nextText: '다음 달',
+       monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+       monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+       dayNames: ['일','월','화','수','목','금','토'],
+       dayNamesShort: ['일','월','화','수','목','금','토'],
+       dayNamesMin: ['일','월','화','수','목','금','토'],
+       showMonthAfterYear: true,
+       changeMonth: true,
+       changeYear: true,
+       yearSuffix: '년',
+       beforeShowDay: disableSomeDay
+   });
+   var from = $("#from").datepicker({
+      defaultDate : "+1w",
+      changeMonth : true,
+      numberOfMonths : 1
+   }).on("change", function() {
+      console.log("test1");
+      to.datepicker("option", "minDate", getDate(this));
+   }), to = $("#to").datepicker({
+      defaultDate : "+1w",
+      changeMonth : true,
+      numberOfMonths : 1
+   }).on("change", function() {
+      console.log("test2");
+      from.datepicker("option", "maxDate", getDate(this));
+   });
+
+   function getDate(element) {
+      var date;
+      try {
+         date = $.datepicker.parseDate('yy-mm-dd', element.value);
+      } catch (error) {
+         date = null;
+      }
+      return date;
+   }
+});
+      $(function(){//
+	      $(".wish").on("click", function(){
+	         $.ajax({ 
+	            url: "/mypage/wishlist/addwish",
+	            type: "POST",
+	            /* cache: "false", */
+	            data: {aid : $("#aid").val(), mseq : $("#mseq").val()},
+	            success: function(data){
+	            	if(data.trim()=='deleteWishList'){
+	            		alert("찜 취소 되었습니다.");
+	            		$('.wish').css({"color": "black"});
+	            	}else{
+	            		$('.wish').css({"color": "pink"});
+	            		alert("찜 등록 되었습니다.");
+	            	}
+	            },
+	            error : function (data) {
+	                alert('죄송!');
+	                return false;
+	            }  
+	         });
+	      });
+	   });
 </script>
 
 
 <style>
-body, h1, h2, h3 {
+body, h1, h2, h3,h4,h5 {
    font-family: 'Poor Story', cursive;
 }
 
@@ -224,17 +301,9 @@ body, h1, h2, h3 {
          class="row flex-nowrap justify-content-between align-items-center">
          <div class="col-4 pt-1"></div>
          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="/">YourTrip</a>
+            <a class="blog-header-logo text-dark" href="/">YourStay</a>
          </div>
          <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="link-secondary" href="#" aria-label="Search"> <svg
-                  xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                  fill="none" stroke="currentColor" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
-                  viewBox="0 0 24 24">
-                  <title>Search</title><circle cx="10.5" cy="10.5"
-                     r="7.5" />
-                  <path d="M21 21l-5.2-5.2" /></svg></a>
 
             <c:choose>
                <c:when test="${empty loginOkUser}">
@@ -268,7 +337,6 @@ body, h1, h2, h3 {
                ${resVO.apeople}<br />
             </p>
             <p class="lead mb-0">
-               <a href="#" class="text-white fw-bold">무슨무슨 링크...</a>
             </p>
          </div>
       </div>
@@ -290,27 +358,24 @@ body, h1, h2, h3 {
                style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath1}') no-repeat; background-position: center;
   background-size: cover;">
                <div class="carousel-caption">
-                  <h5>First slide label</h5>
-                  <p>Some representative placeholder content for the first
-                     slide.</p>
+                  <h5></h5>
+                  <p></p>
                </div>
             </div>
             <div class="carousel-item"
                style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath2}') no-repeat;background-position: center;
   background-size: cover;">
                <div class="carousel-caption">
-                  <h5>Second slide label</h5>
-                  <p>Some representative placeholder content for the second
-                     slide.</p>
+                  <h5></h5>
+                  <p></p>
                </div>
             </div>
             <div class="carousel-item"
                style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath3}') no-repeat;background-position: center;
   background-size: cover;">
                <div class="carousel-caption">
-                  <h5>Third slide label</h5>
-                  <p>Some representative placeholder content for the third
-                     slide.</p>
+                  <h5></h5>
+                  <p></p>
                </div>
             </div>
          </div>
@@ -331,7 +396,7 @@ body, h1, h2, h3 {
          <div class="col-md-8">
             <article class="blog-post">
                <h2 class="blog-post-title">${resVO.mname}님이
-                  운영하는 숙소입니다 <button class='fas fa-hand-holding-heart like' type="submit"></button>
+                  운영하는 숙소입니다 <i class='fas fa-hand-holding-heart wish'></i>
                </h2>
                <p class="blog-post-meta">
                   방 갯수: ${resVO.rnum}<br />화장실 갯수: ${resVO.tnum}<br />침대 갯수:
@@ -560,7 +625,7 @@ body, h1, h2, h3 {
                           '        </div>' + 
                           '        <div class="body">' + 
                           '            <div class="img">' +
-                          '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+                          '                <img src="../../resources/images/logo.png" width="73" height="70">' +
                           '           </div>' + 
                           '            <div class="desc">' + 
                           '                <div class="ellipsis">${resVO.amap}</div>' + 
@@ -605,762 +670,6 @@ body, h1, h2, h3 {
                   <div class="col-md-12">
                      <div class="offer-dedicated-body-left">
                         <div class="tab-content" id="pills-tabContent">
-                           <div class="tab-pane fade" id="pills-order-online"
-                              role="tabpanel" aria-labelledby="pills-order-online-tab">
-                              <div id="#menu"
-                                 class="bg-white rounded shadow-sm p-4 mb-4 explore-outlets">
-                                 <h5 class="mb-4">Recommended</h5>
-                                 <form class="explore-outlets-search mb-4">
-                                    <div class="input-group">
-                                       <input type="text" placeholder="Search for dishes..."
-                                          class="form-control">
-                                       <div class="input-group-append">
-                                          <button type="button" class="btn btn-link">
-                                             <i class="icofont-search"></i>
-                                          </button>
-                                       </div>
-                                    </div>
-                                 </form>
-                                 <h6 class="mb-3">
-                                    Most Popular <span class="badge badge-success"><i
-                                       class="icofont-tags"></i> 15% Off All Items </span>
-                                 </h6>
-                                 <div
-                                    class="owl-carousel owl-theme owl-carousel-five offers-interested-carousel mb-3 owl-loaded owl-drag owl-hidden">
-
-                                    <div class="owl-stage-outer">
-                                       <div class="owl-stage"
-                                          style="transform: translate3d(-682px, 0px, 0px); transition: all 0s ease 0s; width: 2183px;">
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/2.png">
-                                                      <h6>Sandwiches</h6> <small>8 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/3.png">
-                                                      <h6>Soups</h6> <small>2 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/4.png">
-                                                      <h6>Pizzas</h6> <small>56 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/5.png">
-                                                      <h6>Pastas</h6> <small>10 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/6.png">
-                                                      <h6>Chinese</h6> <small>25 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item active" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/1.png">
-                                                      <h6>Burgers</h6> <small>5 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item active" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/2.png">
-                                                      <h6>Sandwiches</h6> <small>8 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item active" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/3.png">
-                                                      <h6>Soups</h6> <small>2 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item active" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/4.png">
-                                                      <h6>Pizzas</h6> <small>56 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item active" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/5.png">
-                                                      <h6>Pastas</h6> <small>10 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/6.png">
-                                                      <h6>Chinese</h6> <small>25 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/1.png">
-                                                      <h6>Burgers</h6> <small>5 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/2.png">
-                                                      <h6>Sandwiches</h6> <small>8 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/3.png">
-                                                      <h6>Soups</h6> <small>2 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/4.png">
-                                                      <h6>Pizzas</h6> <small>56 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="owl-item cloned" style="width: 136.4px;">
-                                             <div class="item">
-                                                <div class="mall-category-item">
-                                                   <a href="#"> <img class="img-fluid"
-                                                      src="img/list/5.png">
-                                                      <h6>Pastas</h6> <small>10 ITEMS</small>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="owl-nav">
-                                       <button type="button" role="presentation" class="owl-prev">
-                                          <i class="icofont-thin-left"></i>
-                                       </button>
-                                       <button type="button" role="presentation" class="owl-next">
-                                          <i class="icofont-thin-right"></i>
-                                       </button>
-                                    </div>
-                                    <div class="owl-dots disabled"></div>
-                                 </div>
-                              </div>
-                              <div class="row">
-                                 <h5 class="mb-4 mt-3 col-md-12">Best Sellers</h5>
-                                 <div class="col-md-4 col-sm-6 mb-4">
-                                    <div
-                                       class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                                       <div class="list-card-image">
-                                          <div class="star position-absolute">
-                                             <span class="badge badge-success"><i
-                                                class="icofont-star"></i> 3.1 (300+)</span>
-                                          </div>
-                                          <div class="favourite-heart text-danger position-absolute">
-                                             <a href="#"><i class="icofont-heart"></i></a>
-                                          </div>
-                                          <div class="member-plan position-absolute">
-                                             <span class="badge badge-dark">Promoted</span>
-                                          </div>
-                                          <a href="#"> <img src="img/list/7.png"
-                                             class="img-fluid item-img">
-                                          </a>
-                                       </div>
-                                       <div class="p-3 position-relative">
-                                          <div class="list-card-body">
-                                             <h6 class="mb-1">
-                                                <a href="#" class="text-black">Bite Me Sandwiches</a>
-                                             </h6>
-                                             <p class="text-gray mb-2">North Indian • Indian</p>
-                                             <p class="text-gray time mb-0">
-                                                <a class="btn btn-link btn-sm pl-0 text-black pr-0"
-                                                   href="#">$550 </a> <span class="badge badge-success">NEW</span>
-                                                <span class="float-right"> <a
-                                                   class="btn btn-outline-secondary btn-sm" href="#">ADD</a>
-                                                </span>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-md-4 col-sm-6 mb-4">
-                                    <div
-                                       class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                                       <div class="list-card-image">
-                                          <div class="star position-absolute">
-                                             <span class="badge badge-success"><i
-                                                class="icofont-star"></i> 3.1 (300+)</span>
-                                          </div>
-                                          <div class="favourite-heart text-danger position-absolute">
-                                             <a href="#"><i class="icofont-heart"></i></a>
-                                          </div>
-                                          <div class="member-plan position-absolute">
-                                             <span class="badge badge-dark">Promoted</span>
-                                          </div>
-                                          <a href="#"> <img src="img/list/8.png"
-                                             class="img-fluid item-img">
-                                          </a>
-                                       </div>
-                                       <div class="p-3 position-relative">
-                                          <div class="list-card-body">
-                                             <h6 class="mb-1">
-                                                <a href="#" class="text-black">Famous Dave's Bar-B </a>
-                                             </h6>
-                                             <p class="text-gray mb-2">Hamburgers • Indian</p>
-                                             <p class="text-gray time mb-0">
-                                                <a class="btn btn-link btn-sm pl-0 text-black pr-0"
-                                                   href="#">$250 </a> <span class="badge badge-primary">NEW</span>
-                                                <span class="float-right"> <span
-                                                   class="count-number">
-                                                      <button
-                                                         class="btn btn-outline-secondary  btn-sm left dec">
-                                                         <i class="icofont-minus"></i>
-                                                      </button> <input class="count-number-input" type="text"
-                                                      value="1" readonly="">
-                                                      <button
-                                                         class="btn btn-outline-secondary btn-sm right inc">
-                                                         <i class="icofont-plus"></i>
-                                                      </button>
-                                                </span>
-                                                </span>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-md-4 col-sm-6 mb-4">
-                                    <div
-                                       class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                                       <div class="list-card-image">
-                                          <div class="star position-absolute">
-                                             <span class="badge badge-success"><i
-                                                class="icofont-star"></i> 3.1 (300+)</span>
-                                          </div>
-                                          <div class="favourite-heart text-danger position-absolute">
-                                             <a href="#"><i class="icofont-heart"></i></a>
-                                          </div>
-                                          <div class="member-plan position-absolute">
-                                             <span class="badge badge-dark">Promoted</span>
-                                          </div>
-                                          <a href="#"> <img src="img/list/9.png"
-                                             class="img-fluid item-img">
-                                          </a>
-                                       </div>
-                                       <div class="p-3 position-relative">
-                                          <div class="list-card-body">
-                                             <h6 class="mb-1">
-                                                <a href="#" class="text-black">Bite Me Sandwiches</a>
-                                             </h6>
-                                             <p class="text-gray mb-2">North Indian • Indian</p>
-                                             <p class="text-gray time mb-0">
-                                                <a class="btn btn-link btn-sm pl-0 text-black pr-0"
-                                                   href="#">$250 </a> <span class="badge badge-info">NEW</span>
-                                                <span class="float-right"> <a
-                                                   class="btn btn-outline-secondary btn-sm" href="#">ADD</a>
-                                                </span>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row">
-                                 <h5 class="mb-4 mt-3 col-md-12">
-                                    Quick Bites <small class="h6 text-black-50">3 ITEMS</small>
-                                 </h5>
-                                 <div class="col-md-12">
-                                    <div class="bg-white rounded border shadow-sm mb-4">
-                                       <div class="gold-members p-3 border-bottom">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Chicken Tikka Sub</h6>
-                                                <p class="text-gray mb-0">$314 - 12" (30 cm)</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3 border-bottom">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">
-                                                   Cheese corn Roll <span class="badge badge-danger">BESTSELLER</span>
-                                                </h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-success food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">
-                                                   Cheese Spinach corn Roll <span
-                                                      class="badge badge-success">Pure Veg</span>
-                                                </h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row">
-                                 <h5 class="mb-4 mt-3 col-md-12">
-                                    Starters <small class="h6 text-black-50">3 ITEMS</small>
-                                 </h5>
-                                 <div class="col-md-12">
-                                    <div class="bg-white rounded border shadow-sm mb-4">
-                                       <div class="menu-list p-3 border-bottom">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <img class="mr-3 rounded-pill" src="img/5.jpg"
-                                                alt="Generic placeholder image">
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Veg Spring Roll</h6>
-                                                <p class="text-gray mb-0">$314 - 12" (30 cm)</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="menu-list p-3 border-bottom">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <img class="mr-3 rounded-pill" src="img/2.jpg"
-                                                alt="Generic placeholder image">
-                                             <div class="media-body">
-                                                <h6 class="mb-1">
-                                                   Stuffed Mushroom <span class="badge badge-danger">BESTSELLER</span>
-                                                </h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="menu-list p-3">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <img class="mr-3 rounded-pill" src="img/3.jpg"
-                                                alt="Generic placeholder image">
-                                             <div class="media-body">
-                                                <h6 class="mb-1">
-                                                   Honey Chilli Potato <span class="badge badge-success">Pure
-                                                      Veg</span>
-                                                </h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="row">
-                                 <h5 class="mb-4 mt-3 col-md-12">
-                                    Soups <small class="h6 text-black-50">8 ITEMS</small>
-                                 </h5>
-                                 <div class="col-md-12">
-                                    <div class="bg-white rounded border shadow-sm">
-                                       <div class="gold-members p-3 border-bottom">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Tomato Dhania Shorba</h6>
-                                                <p class="text-gray mb-0">$314 - 12" (30 cm)</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3 border-bottom">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Veg Manchow Soup</h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3 border-bottom">
-                                          <span class="count-number float-right">
-                                             <button
-                                                class="btn btn-outline-secondary  btn-sm left dec">
-                                                <i class="icofont-minus"></i>
-                                             </button> <input class="count-number-input" type="text" value="1"
-                                             readonly="">
-                                             <button
-                                                class="btn btn-outline-secondary btn-sm right inc">
-                                                <i class="icofont-plus"></i>
-                                             </button>
-                                          </span>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-success food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Lemon Coriander Soup</h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3 border-bottom">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Tomato Dhania Shorba</h6>
-                                                <p class="text-gray mb-0">$314 - 12" (30 cm)</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3 border-bottom">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-danger food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Veg Manchow Soup</h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="gold-members p-3">
-                                          <a class="btn btn-outline-secondary btn-sm  float-right"
-                                             href="#">ADD</a>
-                                          <div class="media">
-                                             <div class="mr-3">
-                                                <i class="icofont-ui-press text-success food-item"></i>
-                                             </div>
-                                             <div class="media-body">
-                                                <h6 class="mb-1">Lemon Coriander Soup</h6>
-                                                <p class="text-gray mb-0">$600</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="tab-pane fade" id="pills-gallery" role="tabpanel"
-                              aria-labelledby="pills-gallery-tab">
-                              <div id="gallery" class="bg-white rounded shadow-sm p-4 mb-4">
-                                 <div
-                                    class="restaurant-slider-main position-relative homepage-great-deals-carousel">
-                                    <div
-                                       class="owl-carousel owl-theme homepage-ad owl-loaded owl-drag owl-hidden">
-
-                                       <div class="owl-stage-outer">
-                                          <div class="owl-stage"
-                                             style="transform: translate3d(-1364px, 0px, 0px); transition: all 0s ease 0s; width: 8184px;">
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/1.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/2.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/3.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item active" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/1.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/2.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/3.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/1.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/2.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/3.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/1.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/2.png">
-                                                </div>
-                                             </div>
-                                             <div class="owl-item cloned" style="width: 682px;">
-                                                <div class="item">
-                                                   <img class="img-fluid" src="img/gallery/3.png">
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="owl-nav">
-                                          <button type="button" role="presentation" class="owl-prev">
-                                             <i class="fa fa-chevron-left"></i>
-                                          </button>
-                                          <button type="button" role="presentation" class="owl-next">
-                                             <i class="fa fa-chevron-right"></i>
-                                          </button>
-                                       </div>
-                                       <div class="owl-dots disabled"></div>
-                                    </div>
-                                    <div
-                                       class="position-absolute restaurant-slider-pics bg-dark text-white">2
-                                       of 14 Photos</div>
-                                    <div class="position-absolute restaurant-slider-view-all">
-                                       <button type="button" class="btn btn-light bg-white">See
-                                          all Photos</button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="tab-pane fade" id="pills-restaurant-info"
-                              role="tabpanel" aria-labelledby="pills-restaurant-info-tab">
-                              <div id="restaurant-info"
-                                 class="bg-white rounded shadow-sm p-4 mb-4">
-                                 <div class="address-map float-right ml-5">
-                                    <div class="mapouter">
-                                       <div class="gmap_canvas">
-                                          <iframe width="300" height="170" id="gmap_canvas"
-                                             src="https://maps.google.com/maps?q=university%20of%20san%20francisco&amp;t=&amp;z=9&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
-                                             frameborder="0" scrolling="no" marginheight="0"
-                                             marginwidth="0"></iframe>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <h5 class="mb-4">Restaurant Info</h5>
-                                 <p class="mb-3">
-                                    Jagjit Nagar, Near Railway Crossing, <br> Near Model
-                                    Town, Ludhiana, PUNJAB
-                                 </p>
-                                 <p class="mb-2 text-black">
-                                    <i class="icofont-phone-circle text-primary mr-2"></i> +91
-                                    01234-56789, +91 01234-56789
-                                 </p>
-                                 <p class="mb-2 text-black">
-                                    <i class="icofont-email text-primary mr-2"></i>
-                                    iamosahan@gmail.com, osahaneat@gmail.com
-                                 </p>
-                                 <p class="mb-2 text-black">
-                                    <i class="icofont-clock-time text-primary mr-2"></i> Today
-                                    11am – 5pm, 6pm – 11pm <span class="badge badge-success">
-                                       OPEN NOW </span>
-                                 </p>
-                                 <hr class="clearfix">
-                                 <p class="text-black mb-0">
-                                    You can also check the 3D view by using our menue map
-                                    clicking here &nbsp;&nbsp;&nbsp; <a
-                                       class="text-info font-weight-bold" href="#">Venue Map</a>
-                                 </p>
-                                 <hr class="clearfix">
-                                 <h5 class="mt-4 mb-4">More Info</h5>
-                                 <p class="mb-3">Dal Makhani, Panneer Butter Masala,
-                                    Kadhai Paneer, Raita, Veg Thali, Laccha Paratha, Butter Naan</p>
-                                 <div class="border-btn-main mb-4">
-                                    <a class="border-btn text-success mr-2" href="#"><i
-                                       class="icofont-check-circled"></i> Breakfast</a> <a
-                                       class="border-btn text-danger mr-2" href="#"><i
-                                       class="icofont-close-circled"></i> No Alcohol Available</a> <a
-                                       class="border-btn text-success mr-2" href="#"><i
-                                       class="icofont-check-circled"></i> Vegetarian Only</a> <a
-                                       class="border-btn text-success mr-2" href="#"><i
-                                       class="icofont-check-circled"></i> Indoor Seating</a> <a
-                                       class="border-btn text-success mr-2" href="#"><i
-                                       class="icofont-check-circled"></i> Breakfast</a> <a
-                                       class="border-btn text-danger mr-2" href="#"><i
-                                       class="icofont-close-circled"></i> No Alcohol Available</a> <a
-                                       class="border-btn text-success mr-2" href="#"><i
-                                       class="icofont-check-circled"></i> Vegetarian Only</a>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="tab-pane fade" id="pills-book" role="tabpanel"
-                              aria-labelledby="pills-book-tab">
-                              <div id="book-a-table"
-                                 class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
-                                 <h5 class="mb-4">Book A Table</h5>
-                                 <form>
-                                    <div class="row">
-                                       <div class="col-sm-6">
-                                          <div class="form-group">
-                                             <label>Full Name</label> <input class="form-control"
-                                                type="text" placeholder="Enter Full Name">
-                                          </div>
-                                       </div>
-                                       <div class="col-sm-6">
-                                          <div class="form-group">
-                                             <label>Email Address</label> <input class="form-control"
-                                                type="text" placeholder="Enter Email address">
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-sm-6">
-                                          <div class="form-group">
-                                             <label>Mobile number</label> <input class="form-control"
-                                                type="text" placeholder="Enter Mobile number">
-                                          </div>
-                                       </div>
-                                       <div class="col-sm-6">
-                                          <div class="form-group">
-                                             <label>Date And Time</label> <input class="form-control"
-                                                type="text" placeholder="Enter Date And Time">
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="form-group text-right">
-                                       <button class="btn btn-primary" type="button">
-                                          Submit</button>
-                                    </div>
-                                 </form>
-                              </div>
-                           </div>
                            <div class="tab-pane fade active show" id="pills-reviews"
                               role="tabpanel" aria-labelledby="pills-reviews-tab">
                               <div id="ratings-and-reviews"
@@ -1373,7 +682,6 @@ body, h1, h2, h3 {
                                     href="#"><i class="icofont-ui-rating icofont-2x active"></i></a>
                                     <a href="#"><i class="icofont-ui-rating icofont-2x"></i></a>
                                  </span>
-                                 <h5 class="mb-0 pt-1">Rate this Place</h5>
                               </div>
                               <div
                                  class="bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating">
@@ -1385,7 +693,7 @@ body, h1, h2, h3 {
                                           href="#"><i class="icofont-ui-rating active"></i></a> <a
                                           href="#"><i class="icofont-ui-rating active"></i></a> <a
                                           href="#"><i class="icofont-ui-rating"></i></a> <b
-                                          class="text-black ml-2">334</b>
+                                          class="text-black ml-2">총 방문자 수 : ${reservation}</b>
                                     </div>
                                     <p class="text-black mb-4 mt-2">Rated 3.5 out of 5</p>
                                  </div>
@@ -1450,16 +758,13 @@ body, h1, h2, h3 {
                               </div>
                               <div
                                  class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
-                                 <a href="#"
-                                    class="btn btn-outline-primary btn-sm float-right">Top
-                                    Rated</a>
                                  <h5 class="mb-1">All Ratings and Reviews</h5>
-                             
+                             	 
                                  <c:forEach items="${reslist}" var="reviewlist">
                                  <hr>
                                  <div class="reviews-members pt-4 pb-4">
                                     <div class="media">
-                                       <a href="#"><img alt="Generic placeholder image"
+                                       <a href=""><img alt="Generic placeholder image"
                                           src="http://bootdey.com/img/Content/avatar/avatar6.png"
                                           class="mr-3 rounded-pill"></a>
                                        <div class="media-body">
@@ -1471,6 +776,9 @@ body, h1, h2, h3 {
                                                    class="icofont-ui-rating active"></i></a> <a href="#"><i
                                                    class="icofont-ui-rating"></i></a>
                                              </span>
+                                             <c:if test="${reviewlist==null }">
+			                             	 <h4>아직 후기가 없어요 ㅜ.ㅜ</h4>
+			                             	 </c:if>
                                              <h6 class="mb-1">
                                                 <a class="text-black" href="#">${reviewlist.mname}</a>
                                              </h6>
@@ -1479,40 +787,11 @@ body, h1, h2, h3 {
                                           <div class="reviews-members-body">
                                              <p>${reviewlist.review}</p>
                                           </div>
-                                          <div class="reviews-members-footer">
-                                             <a class="total-like" href="#"><i
-                                                class="icofont-thumbs-up"></i> 88K</a> <a class="total-like"
-                                                href="#"><i class="icofont-thumbs-down"></i> 1K</a> <span
-                                                class="total-like-user-main ml-2" dir="rtl"> <a
-                                                data-toggle="tooltip" data-placement="top" title=""
-                                                href="#" data-original-title="Gurdeep Osahan"><img
-                                                   alt="Generic placeholder image"
-                                                   src="http://bootdey.com/img/Content/avatar/avatar5.png"
-                                                   class="total-like-user rounded-pill"></a> <a
-                                                data-toggle="tooltip" data-placement="top" title=""
-                                                href="#" data-original-title="Gurdeep Singh"><img
-                                                   alt="Generic placeholder image"
-                                                   src="http://bootdey.com/img/Content/avatar/avatar2.png"
-                                                   class="total-like-user rounded-pill"></a> <a
-                                                data-toggle="tooltip" data-placement="top" title=""
-                                                href="#" data-original-title="Askbootstrap"><img
-                                                   alt="Generic placeholder image"
-                                                   src="http://bootdey.com/img/Content/avatar/avatar3.png"
-                                                   class="total-like-user rounded-pill"></a> <a
-                                                data-toggle="tooltip" data-placement="top" title=""
-                                                href="#" data-original-title="Osahan"><img
-                                                   alt="Generic placeholder image"
-                                                   src="http://bootdey.com/img/Content/avatar/avatar4.png"
-                                                   class="total-like-user rounded-pill"></a>
-                                             </span>
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
                                  </c:forEach>
                                  <hr>
-                                 <a class="text-center w-100 d-block mt-4 font-weight-bold"
-                                    href="#">See All Reviews</a>
                               </div>
 
                            </div>
@@ -1537,7 +816,8 @@ body, h1, h2, h3 {
                               onchange="daysPriceCalc()" type="text" id="to" name="rend"
                               value="${resVO.rend}">
                            <!-- 히든 value -->
-                           <input type="hidden" value="${resVO.aid}" name="aid">
+                           <input type="hidden" value="${resVO.aid}" name="aid" id="aid">
+                           <input type="hidden" value="${loginOkUser.mseq}" name="mseq" id="mseq">
                            <div class="products">
                               <h3 class="title">금액</h3>
                               <div class="item">
@@ -1572,18 +852,16 @@ body, h1, h2, h3 {
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
-         <p class="text-center text-muted">© 2021 Company, Inc</p>
+         <p class="text-center text-muted">© 2022 Company, Inc</p>
       </footer>
    </div>
 </body>

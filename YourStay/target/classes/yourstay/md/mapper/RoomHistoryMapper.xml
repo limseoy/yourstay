@@ -7,4 +7,15 @@
 	<select id="getRoomList" resultType="yourstay.md.domain.Reservation">
       select * from reservation R, accommodation A, member M where R.mseq=M.mseq and A.aid= R.aid and R.mseq=#{mseq}
    </select>
+   
+   <select id="goReservationList" resultType="yourstay.md.domain.Reservation">
+	  select * from reservation r, member m, accommodation a where r.mseq = m.mseq and r.aid = a.aid and r.aid in (select aid from accommodation where mseq = #{mseq})
+   </select>
+   
+   <select id="goReservationRoom" resultType="yourstay.md.domain.Reservation">
+      select * from reservation r, accommodation a, member m where rid=#{rid} and r.aid=a.aid and m.mseq=r.mseq
+   </select>
+   <select id="getWishList" resultType="yourstay.md.domain.WishListVO">
+      select * from wishlist W, accommodation A where A.aid= W.aid and W.mseq=#{mseq}
+   </select>
 </mapper>

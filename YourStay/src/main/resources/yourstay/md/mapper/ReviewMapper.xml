@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="yourstay.md.mapper.ReviewMapper">
 
-	<select id="getUser" resultType="yourstay.md.domain.reviewVO">
-      select * from review natural join member where memail=#{memail}
+	<select id="getUser" resultType="yourstay.md.domain.resultVO">
+      select * from accommodation natural join member where memail=#{memail}
    </select>
    
    <!-- 게시판 글 작성 -->

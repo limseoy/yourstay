@@ -26,7 +26,6 @@ public class MyRoomServiceImpl implements MyRoomService {
 	public List<roomRegisterVO> modifyMyRoom(long aid, long mseq) {
 		System.out.println("#(1)MyRoomServiceImpl");
 		roomModifyVO vo = new roomModifyVO(aid, mseq);
-		//System.out.println("#(2)MyRoomServiceImpl aid:" + vo.getAid() + ", mseq: " + vo.getMseq());
 		List<roomRegisterVO> vo1 = mapper.modifyRoom(vo);
 		System.out.println("#(3)MyRoomServiceImpl modifyMyRoom() vo: "+ vo1);
 		return vo1;	

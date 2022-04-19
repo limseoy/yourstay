@@ -116,7 +116,68 @@
 </style>
 
 <script type="text/javascript">
-	
+$(function(){   
+	// 비밀번호 숫자 + 영어 대/소문자 + 특수문자 합쳐서 8 ~ 16자로 지정가능 표현식
+	$('#mpwd').on("keyup"  , function(){
+	   let btn = document.querySelector('#joinBtn'); //수정버튼 
+       let pwdval =  $('#mpwd').val(); // 입력된 pwd값
+       let pcheck1 = /(?=.*?[a-z])(?=.*?[A-Z])/;  // 영어 대/소 문자 포함
+       let pcheck2 = /(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;  // 숫자 + 특수문자
+       let pcheck3 = /^.{8,16}$/;  // 길이체크
+       if(pcheck1.test(pwdval) && pcheck2.test(pwdval) && pcheck3.test(pwdval)){
+          $('#messagespwd').text("비밀번호 사용이 가능합니다!!");
+          $('#messagespwd').css( "color", "aqua" );
+          $('#messagespwd').css('font-weight' ,  "bold");
+          btn.disabled = false;//수정버튼 활성화여부 설정
+       } else {
+          $('#messagespwd').text("비밀번호는 숫자+영문 대/소문자 +특수문자를 각각 1개 이상 넣어야 합니다!");
+          $('#messagespwd').css( "color", "red" );
+          $('#messagespwd').css('font-weight' ,  "bold");
+          btn.disabled = true;//수정버튼 활성화여부 설정
+       }            
+    });
+ });   
+ 
+$(function(){   
+	// 비밀번호 숫자 + 영어 대/소문자 + 특수문자 합쳐서 8 ~ 16자로 지정가능 표현식
+	$('#memail').on("keyup"  , function(){
+	   let btn = document.querySelector('#joinBtn'); //수정버튼 
+       let emailval =  $('#memail').val(); // 입력된 pwd값
+       var pcheck1 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+       if(pcheck1.test(emailval)){
+    	   $('#messagesemail').text("이메일 형식이 맞습니다!!");
+           $('#messagesemail').css( "color", "aqua" );
+           $('#messagesemail').css('font-weight' ,  "bold");
+          btn.disabled = false;//수정버튼 활성화여부 설정
+       } else {
+          $('#messagesemail').text("이메일 형식으로 입력해주세요!");
+          $('#messagesemail').css( "color", "red" );
+          $('#messagesemail').css('font-weight' ,  "bold");
+          btn.disabled = true;//수정버튼 활성화여부 설정
+       }            
+    });
+ });  
+$(function(){   
+	// 비밀번호 숫자 + 영어 대/소문자 + 특수문자 합쳐서 8 ~ 16자로 지정가능 표현식
+	$('#mcallnum').on("keyup"  , function(){
+	   let btn = document.querySelector('#joinBtn'); //수정버튼 
+       let callnumval =  $('#mcallnum').val(); // 입력된 pwd값
+       var pcheck1 = /^[0-9]+$/; 
+       let pcheck2 = /^.{10,11}$/;
+       if(pcheck1.test(callnumval)&& pcheck2.test(callnumval)){
+    	   $('#messagescallnum').text("전화번호 형식이 맞습니다!!");
+           $('#messagescallnum').css( "color", "aqua" );
+           $('#messagescallnum').css('font-weight' ,  "bold");
+          btn.disabled = false;//수정버튼 활성화여부 설정
+       } else {
+          $('#messagescallnum').text("전화번호 형식으로 입력해주세요!");
+          $('#messagescallnum').css( "color", "red" );
+          $('#messagescallnum').css('font-weight' ,  "bold");
+          btn.disabled = true;//수정버튼 활성화여부 설정
+       }            
+    });
+ });  
+ 	
 $(document).ready(function(){
 	$(".joinBtn").click(function(){
         // 태크.val() : 태그에 입력된 값
@@ -197,19 +258,22 @@ $(document).ready(function(){
 						<th>이메일</th>
 						<td><input type='text' name="memail" id="memail"> ex)ya63kr@nate.com
 						</td>
+							<p class="text-center mt-3" id="messagesemail"></p>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
-						<td><input type="password" name="mpwd" id="mpwd"> 영문/숫자포함 6자 이상</td>
+						<td><input type="password" name="mpwd" id="mpwd"> 영문(대/소)+숫자+특수문자 포함 8 ~ 16자</td>
+							<p class="text-center mt-3" id="messagespwd"></p>
 					</tr>
 					<tr>
 						<th>비밀번호 확인</th>
 						<td><input type="password" name="mpwd_re" id="mpwd_re"></td>
 					</tr>
-					
 					<tr>
 						<th>핸드폰 번호</th>
-						<td><input type="text" name="mcallnum"> ex) -없이 적으세요</td>
+						<td><input type="text" name="mcallnum" id="mcallnum"> ex) -없이 적으세요</td>
+							<p class="text-center mt-3" id="messagescallnum"></p>
+					
 					</tr>
 					<tr height="2" bgcolor="#2AC1BC">
 						<td colspan="2"></td>
@@ -217,7 +281,7 @@ $(document).ready(function(){
 				  </table>
 				  <table style=" width:100%;  margin: auto; text-align: center;">
 				  	<tr>
-						<td style="text-align: 'center';"><input type="button" style="color:#fff;background-color: #2AC1BC;" class="joinBtn" value="회원가입"></td>
+						<td style="text-align: 'center';"><input type="button" style="color:#fff;background-color: #2AC1BC;" class="joinBtn" id="joinBtn" value="회원가입"></td>
 				
 						<td style="text-align: 'cetner';"><input type="button" style="color:#fff;background-color: #2AC1BC;" class="cancelBtn" value="취소"onclick="goIndexForm()"></td>
 					</tr>
@@ -230,11 +294,18 @@ $(document).ready(function(){
 			</script>
 		</c:if>
 	</div>
-	<footer class="blog-footer">
-	  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-	  <p>
-	    <a href="#">Back to top</a>
-	  </p>
-	</footer>
+      <footer class="py-3 my-4">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2021 Company, Inc</p>
+      </footer>
 </body>
 </html>

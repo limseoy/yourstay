@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WishListVO {
-	private long wid;
-	private long mseq;
-	private long aid;
-	
-	private String aname;
-	private int aprice; 
-	private String aloc;
-}
+	   private long wid;
+	   private long mseq;
+	   private long aid;
+	   
+	   private String aname;
+	   private long aprice; 
+	   private String aloc;
+	   private String ipath1;
+	}

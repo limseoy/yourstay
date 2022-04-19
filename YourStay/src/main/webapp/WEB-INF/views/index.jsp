@@ -22,18 +22,31 @@
 <link rel="stylesheet" href="../css/airDnDCSS.css">
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/reset.css">
-
+<link href="/css/info_slide.css" rel="stylesheet">
 <!-- 구글웹폰트 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
    href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
    rel="stylesheet">
+<!-- alert -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- Fontawesome -->
 <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
    crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+   <!-- JS -->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet"
+   href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<script src="/js/info_bootstrap.bundle.min.js"></script>
+
+   
 <script>
    $(document)
          .ready(
@@ -65,6 +78,14 @@
                                           + $("#personnel").val();
                                  }
                               });
+                  $("#locSubmitBtn")
+                  .click(
+                        function() {
+                              location.href = "../locInListFromMainGet.do?aloc="
+                                    + $("#locSubmitBtn").val();
+                        });
+                  
+                  
                   $("#datepicker1").datepicker({
                      dateFormat : 'yy-mm-dd'
                   });
@@ -85,13 +106,50 @@
                      window.location = "index.jsp";
                   });
                });
+   $(function(){
+       document.getElementById('my_btn').click();
+    });
+   function buttonCheck(check,loginCheck){
+     
+       var mnum = loginCheck;
+       if(loginCheck !=null && check!=0){//checkNum이 널이면 로그인이 안되어있거나 메세지가없는것,0이면 알림을끝상태
+          const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: true,
+              showCancelButton: true,
+              confirmButtonText : "예약내용 보러가기",
+              cancelButtonText: '알림끄기',
+              timer: 20000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              }
+            })
+            Toast.fire({
+              icon: 'success',
+              title: '새로운 예약이 있습니다'
+            }).then((result) => {
+                 if (result.isConfirmed) {//여기에 예약보러가는 로직
+                       location.href="mypage/goReservationList?mseq="+${mvo.getMseq()};
+                    } else if (
+                      /* Read more about handling dismissals below */
+                      result.dismiss === Swal.DismissReason.cancel
+                    ) {//여기에 로직 알림끄는 
+                       //RESERVATION 테이블 checkview 1로 업데이트해주면 됨
+                    }    
+            })
+       }
+   }
+  
 </script>
 <!--// bootstrap-css -->
 <!-- css -->
 <link rel="stylesheet" href="../css/blog.css" type="text/css"
    media="all" />
 <%
-	String memail = (String) session.getAttribute("memail");
+   String memail = (String) session.getAttribute("memail");
 %>
 </head>
 <style>
@@ -102,7 +160,6 @@
    -moz-user-select: none;
    user-select: none;
 }
-
 @media ( min-width : 768px) {
    .bd-placeholder-img-lg {
       font-size: 3.5rem;
@@ -110,10 +167,25 @@
 }
 </style>
 <body>
+<c:choose>
+   <c:when test="${check eq null }">
+      <c:set value="null" var="check"/>
+   </c:when>
+   <c:otherwise>
+      <c:set value="${check}" var="check"/>
+   </c:otherwise>
+</c:choose>
+<c:choose>
+   <c:when test="${loginOkUser eq null }">
+      <c:set value="null" var="loginOkUser"/>
+   </c:when>
+   <c:otherwise>
+      <c:set value="${loginOkUser.mseq}" var="loginOkUser"/>
+   </c:otherwise>
+</c:choose>
 
    <div class="container">
       <header class="blog-header py-3">
-      <a href="/chat">채팅하기</a>
          <div
             class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1">
@@ -122,12 +194,6 @@
                <a class="blog-header-logo text-dark" href="/">YourStay</a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center" style="padding-right: 10px; padding-top: 14px;">
-               <a class="link-secondary" href="#" aria-label="Search"> 
-				<i class='fa fa-bell' style="margin-right: 30px;"></i>
-                     <title>Search</title><circle cx="10.5" cy="10.5"
-                        r="7.5" />
-                     <path d="M21 21l-5.2-5.2" /></svg>
-               </a> 
                <c:choose>
          <c:when test="${msg =='failure'}">
         <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
@@ -163,6 +229,7 @@
    <main class="container">
       <div id="searchBar">
          <form id="seatrchForm">
+         <input type="hidden" name="mseq" value="${vo[0].mseq}">
             <div id="search" class="radius">
                <p id="indexH1">YourStay 숙소 찾기</p>
                <div id="cityDiv">
@@ -229,101 +296,99 @@
       </div>
       <img class="image-thumbnail" src="../images/river.jpg">
    </div>
-
-   <div class="row mb-2">
+    <div class="row mb-2" style="margin-top: 4%;">
       <div class="col-md-6">
          <div class="card" style="width: 18rem;">
-           <img class="card-img-top" src="../images/river.jpg"
+           <img class="card-img-top" src="../images/가평.jpg"
                   alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">${vo[0].aloc}</h5>
+                <p class="card-text">가평에 위치한 인기 만점 숙소를 보려면 아래 버튼을 클릭해주세요.</p>
+                <a href="/searchByLocation?aloc=${vo[0].aloc}" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Button</a>
+              </div>
+         </div>
+      </div>
+      
+      <div class="col-md-6">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="../images/제주도.jpg"
+                  alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">${vo[4].aloc}</h5>
+                <p class="card-text">제주도에 위치한 인기 만점 숙소를 보려면 아래 버튼을 클릭해주세요.</p>
+                <a href="/searchByLocation?aloc=${vo[4].aloc}" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Button</a>
               </div>
          </div>
       </div>
       <div class="col-md-6">
          <div class="card" style="width: 18rem;">
-           <img class="card-img-top" src="../images/river.jpg"
+           <img class="card-img-top" src="../images/전주.jpg"
                   alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">${vo[2].aloc}</h5>
+                <p class="card-text">여주에 위치한 인기 만점 숙소를 보려면 아래 버튼을 클릭해주세요.</p>
+                <a href="/searchByLocation?aloc=${vo[2].aloc}" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Button</a>
               </div>
          </div>
       </div>
       <div class="col-md-6">
          <div class="card" style="width: 18rem;">
-           <img class="card-img-top" src="../images/river.jpg"
+           <img class="card-img-top" src="../images/강원도.jpg"
                   alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-         </div>
-      </div>
-      <div class="col-md-6">
-         <div class="card" style="width: 18rem;">
-           <img class="card-img-top" src="../images/river.jpg"
-                  alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">${vo[8].aloc}</h5>
+                <p class="card-text">강원도에 위치한 인기 만점 숙소를 보려면 아래 버튼을 클릭해주세요.</p>
+                <a href="/searchByLocation?aloc=${vo[8].aloc}" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Button</a>
               </div>
          </div>
       </div>
    </div>
    <!-- 슬라이드 -->
       <div id="carouselExampleCaptions" class="carousel slide"
-         data-bs-ride="carousel">
+         data-bs-ride="carousel" style="margin-top: 3%;">
          <div class="carousel-indicators">
-            <button type="button"
-               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
-               class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button"
-               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-               aria-label="Slide 2"></button>
-            <button type="button"
-               data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-               aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions"
+               data-bs-slide-to="0" class="active" aria-current="true"
+               aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions"
+               data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions"
+               data-bs-slide-to="2" aria-label="Slide 3"></button>
          </div>
-         <div class="carousel-inner">
+         <div class="carousel-inner" style="width: 98.5%; border-radius: 1%;">
             <div class="carousel-item active"
-               style="background-image: url('https://source.unsplash.com/LAaSoL0LrYs/1920x1080')">
+               style="background:url('../images/forest.jpg') no-repeat; background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
-                  <h5>First slide label</h5>
-                  <p>Some representative placeholder content for the first
-                     slide.</p>
+                  <h5>YourStay</h5>
+                  <p>피톤치드와 함께 힐링을 느낄 수 있는 숙소도 있습니다.</p>
                </div>
             </div>
             <div class="carousel-item"
-               style="background-image: url('https://source.unsplash.com/bF2vsubyHcQ/1920x1080')">
+               style="background:url('../images/ocean.jpg') no-repeat;background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
-                  <h5>Second slide label</h5>
-                  <p>Some representative placeholder content for the second
-                     slide.</p>
+                  <h5>YourStay</h5>
+                  <p>뻥 뚫린 수평선을 바라보며 힐링을 느낄 수 있는 숙소도 있습니다.</p>
                </div>
             </div>
             <div class="carousel-item"
-               style="background-image: url('https://source.unsplash.com/szFUQoyvrxM/1920x1080')">
+               style="background:url('../images/house.jpg') no-repeat;background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
-                  <h5>Third slide label</h5>
-                  <p>Some representative placeholder content for the third
-                     slide.</p>
+                  <h5>YourStay</h5>
+                  <p>아무도 없는 곳에서의 독채! 연인과 가족과 함께 하면 더욱 좋은 숙소도 있습니다.</p>
                </div>
             </div>
          </div>
          <button class="carousel-control-prev" type="button"
             data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="margin-top: 200%;"></span>
             <span class="visually-hidden">Previous</span>
          </button>
          <button class="carousel-control-next" type="button"
             data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="carousel-control-next-icon" aria-hidden="true" style="margin-top: 200%;"></span>
             <span class="visually-hidden">Next</span>
          </button>
       </div>
@@ -332,19 +397,18 @@
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
             <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
-         <p class="text-center text-muted">© 2021 Company, Inc</p>
+         <p class="text-center text-muted">© 2022 Company, Inc</p>
       </footer>
    </div>
+   <input id="my_btn" type="button" onclick="buttonCheck(${check},${loginOkUser})"/>
 </body>
 </html>

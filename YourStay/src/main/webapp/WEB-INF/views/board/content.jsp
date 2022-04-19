@@ -105,37 +105,53 @@
             </div>
          </div>
       </header>
-
+<form method="post" action="delete">
+<input type="hidden" value="${board.boardnum}" name="boardnum">
 <div style="padding: 0px 65px 0;">
-	<h2 class="display-6 text-center mb-4">${board.subject}</h2>
-	
     <div class="table-responsive">
-      <table class="table text-center">
-
+      <table class="table text-center" style="margin-top: 3%;">
         <tbody>
           <tr>
-            <th scope="row" class="text-center">내용</th>
-            <td>${board.content}</svg></td>
+            <th scope="row" class="text-center" style="width: 20%;">서비스 분류</th>
+            <td>${board.category}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-center">제목</th>
+            <td>${board.subject}</td>
+          </tr>
+          <th scope="row" class="text-center">내용</th>
+            <td>${board.content}</td>
           </tr>
 	</tbody>
 	</table>
-	
+	<h4 style="margin-left: 88%;">작성 날짜: ${board.rdate}</h4>
 	<hr width='600' size='2' color='gray' noshade>
 	<div class="pull-right" style="width:100px;margin:10px 0;">
-            <a href="/board/list" class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;">
+      <a href="/board/list" class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;">
             목록 보러 가기</a>
+     <c:if test="${memail=='admin'}">
+      <a href="/board/modify?boardnum=${board.boardnum}" class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;margin-top: 10%;">
+           글 수정하기</a>
+      <button type="submit"class="btn btn-secondary" style="background-color: #2AC1BC !important; border-color: #2AC1BC !important;margin-top: 10%;">
+           글 삭제하기</button>
+     </c:if>
         </div>
 	<hr width='600' size='2' color='gray' noshade>
 	</div>
 	</div>
-<footer class="blog-footer" style="margin-top: 27%;">
-         <p>
-            Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a>
-            by <a href="https://twitter.com/mdo">@mdo</a>.
-         </p>
-         <p>
-            <a href="#">Back to top</a>
-         </p>
+	</form>
+      <footer class="py-3 my-4">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2021 Company, Inc</p>
       </footer>
 </body>
 </html>

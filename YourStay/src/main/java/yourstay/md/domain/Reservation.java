@@ -16,6 +16,7 @@ public class Reservation {
 	private String rend;
 	private int rpeople;
 	private int rprice;
+	private int checkView;
 	//accommodation
     private String aname;
     private String aloc;
@@ -23,7 +24,7 @@ public class Reservation {
     //member
     private String mname;
     private String memail;
-    //image
+  //image
     private String ipath1;
     private String ipath2;
     private String ipath3;

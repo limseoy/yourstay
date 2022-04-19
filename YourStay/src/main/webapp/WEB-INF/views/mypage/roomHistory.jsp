@@ -17,9 +17,9 @@
    href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
    rel="stylesheet">
 <style>
-	body{
-		font-family: 'Poor Story', cursive;
-	}
+   body{
+      font-family: 'Poor Story', cursive;
+   }
 </style>
 <%
    String memail = (String) session.getAttribute("memail");
@@ -32,12 +32,9 @@
       <div class="col-4 pt-1">
       </div>
       <div class="col-4 text-center">
-        <a class="blog-header-logo text-dark" href="/" style="text-decoration:none">YourTrip</a>
+        <a class="blog-header-logo text-dark" href="/" style="text-decoration:none">YourStay</a>
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
-        <a class="link-secondary" href="#" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
-        </a>
         <c:choose>
          <c:when test="${msg =='failure'}">
         <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
@@ -65,7 +62,7 @@
   </header>
 
 <main>
-  <div class="album py-5 bg-light">
+  <div class="album py-5">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <c:forEach items="${vo}" var="vo">
@@ -74,14 +71,12 @@
       <input type="hidden" name="mseq" value="${vo.mseq}">
         <div class="col">
           <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" >
             <img class="cover" src="../../../resources/images/roomImg/${vo.aid}/${vo.ipath1}"/>
-            </svg>
             <div class="card-body">
-              <p class="card-text">숙소 위치: ${vo.aloc}<br/>숙소 이름: ${vo.aname}</p>
+              <p class="card-text">숙소 위치: ${vo.aloc}<br/>숙소 이름: ${vo.aname}<br/>숙소기간: ${vo.rstart} ~ ${vo.rend}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="submit" class="btn btn-sm btn-outline-secondary" style="padding: 5px 30px;">View</button>
+                  <button type="submit" class="btn btn-sm btn-outline-secondary" style="padding: 5px 30px;">리뷰 쓰러 가기</button>
                 </div>
               </div>
             </div>
@@ -98,18 +93,16 @@
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
-         <p class="text-center text-muted">© 2021 Company, Inc</p>
+         <p class="text-center text-muted">© 2022 Company, Inc</p>
       </footer>
    </div>
 

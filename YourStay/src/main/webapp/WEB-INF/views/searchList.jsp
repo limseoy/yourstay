@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+   <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>YourTrip</title>
+<title>YourStay</title>
 <style>
 div.search-info {
    width: 1518px;
@@ -31,7 +31,7 @@ div.list-font {
    height: auto;
 }
 
-.list-font {
+body {
    font-family: 'Poor Story', cursive;
 }
 
@@ -186,17 +186,9 @@ div.list-font {
          <div class="col-4 pt-1"></div>
          <div class="col-4 text-center">
             <a class="blog-header-logo text-dark" href="/"
-               style="text-decoration: none">YourTrip</a>
+               style="text-decoration: none">YourStay</a>
          </div>
          <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="link-secondary" href="#" aria-label="Search"> <svg
-                  xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                  fill="none" stroke="currentColor" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
-                  viewBox="0 0 24 24">
-                  <title>Search</title><circle cx="10.5" cy="10.5" r="7.5" />
-                  <path d="M21 21l-5.2-5.2" /></svg>
-            </a> 
             <c:choose>
          <c:when test="${msg =='failure'}">
         <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
@@ -215,14 +207,14 @@ div.list-font {
          <%} %>
          </c:when> 
          <c:otherwise>
-         <a href="/mypage/home" style="margin-top: 3%; margin-right: 3%;"><%=memail %>님 반갑습니다!</a>
+         <a href="/mypage/home" style="margin-top: 3%; margin-right: 3%;font-size: 130%;"><%=memail %>님 반갑습니다!</a>
          <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
          </c:otherwise>
          </c:choose>
          </div>
       </div>
    </header>
-   <main class="container">
+   <main class="container" style="min-height : 900px">
 
          <form id="seatrchForm">
             <div id="search" class="radius">
@@ -293,18 +285,19 @@ div.list-font {
 
             </div>
             <div class="col-auto d-none d-lg-block">
-				<img width="400" height="580" class="img-fluid rounded mb-4 mb-lg-0" src="../../resources/images/roomImg/${acvo.aid}/${acvo.ipath1}" alt="..." />
+            <img width="400" height="580" class="img-fluid rounded mb-4 mb-lg-0" src="../../resources/images/roomImg/${acvo.aid}/${acvo.ipath1}" alt="..." />
             </div>
          </div>
       </div>
    </c:forEach>
    </div>
-   <div class="map-area" style="    bottom: -58% !important;
+   <div class="map-area" style="bottom: -26% !important;
     position: absolute !important;
     left: 53% !important;">
-      <div id="map" style="width: 600px; height: 530px;"></div>
+      <div id="map" style="width: 600px; height: 500px;"></div>
       <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b87f2182c111fec7ca0b3a2aaede2356&libraries=services,clusterer,drawing">
 </script>
+
 <script>
 
       var container = document.getElementById('map');
@@ -343,7 +336,7 @@ div.list-font {
                           '        </div>' + 
                           '        <div class="body">' + 
                           '            <div class="img">' +
-                          '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+                          '                <img src="../../resources/images/logo.png" width="73" height="70">' +
                           '           </div>' + 
                           '            <div class="desc">' + 
                           '                <div class="ellipsis">${maps.amap}</div>' + 
@@ -384,18 +377,16 @@ div.list-font {
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
-         <p class="text-center text-muted">© 2021 Company, Inc</p>
+         <p class="text-center text-muted">© 2022 Company, Inc</p>
       </footer>
    </div>
 

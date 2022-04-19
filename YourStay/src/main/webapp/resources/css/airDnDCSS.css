@@ -265,7 +265,7 @@ h1{
             z-index:2;
          }
          #cityDiv{
-            width:300px;
+            width:400px;
             height:90px;
             margin:30px 0 30px 40px;
             float:left;
@@ -310,7 +310,7 @@ h1{
                font-size:18px;
             }
          #personnelDiv{
-            width:300px;
+            width:400px;
             height:90px;
             float:left;
             margin-top:30px;

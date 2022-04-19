@@ -59,5 +59,13 @@ public class ReservationServiceImpl implements ReservationService {
 			}
 		}
 	}
+	@Override
+	   public Long checkView(long mseq) {
+	      return reservationMapper.checkView(mseq);
+	   }
 
+	@Override
+	   public List<ReservationDateVO> selectAidReservationDateS(long aid) {
+	      return reservationMapper.selectAidReservationDate(aid);
+	   }
 }
